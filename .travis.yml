@@ -3,5 +3,6 @@ script: make
 
 install:
      - wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
-     - tar -xf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2 -C ~/gcc-arm-none-eabi-8-2018-q4;
+     - tar -xf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2 -C ~/;
+     - mv ~/gcc-arm-none-eabi-8-2018-q4-major  ~/gcc-arm-none-eabi-8-2018-q4
      - export PATH=$PATH:$PWD/gcc-arm-none-eabi-8-2018-q4-major/bin;
