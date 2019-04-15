@@ -80,7 +80,7 @@ startup_stm32f091xc.s
 #######################################
 # binaries
 #######################################
-RUTA_GCC = /usr/local/clang-5.0.0/bin
+RUTA_GCC = $PWD/gcc-arm-none-eabi-8-2018-q4-major/bin
 PREFIX = arm-none-eabi-
 # The gcc compiler bin path can be either defined in make command via RUTA_GCC variable (> make RUTA_GCC=xxx)
 # either it can be added to the PATH environment variable.
