@@ -1,0 +1,1207 @@
+ARM GAS  /tmp/ccgMorOM.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"interfaces.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
+  16              		.align	1
+  17              		.p2align 2,,3
+  18              		.global	HAL_UART_RxCpltCallback
+  19              		.arch armv6s-m
+  20              		.syntax unified
+  21              		.code	16
+  22              		.thumb_func
+  23              		.fpu softvfp
+  25              	HAL_UART_RxCpltCallback:
+  26              	.LVL0:
+  27              	.LFB37:
+  28              		.file 1 "Src/interfaces/interfaces.c"
+   1:Src/interfaces/interfaces.c **** /*******************************************************************************
+   2:Src/interfaces/interfaces.c **** * Filename: .c
+   3:Src/interfaces/interfaces.c **** * Developer(s): Jorge Rios
+   4:Src/interfaces/interfaces.c **** * Language: ANSI C
+   5:Src/interfaces/interfaces.c **** * Abstract: 
+   6:Src/interfaces/interfaces.c **** * ------------------------------------------------------------------------------
+   7:Src/interfaces/interfaces.c **** * Copyright (c) 2009, Investigacion y Tecnologia S.A.
+   8:Src/interfaces/interfaces.c **** * Investigacion y Tecnologia S.A.
+   9:Src/interfaces/interfaces.c **** * Carrera 19  82 - 38
+  10:Src/interfaces/interfaces.c **** * Bogota.
+  11:Src/interfaces/interfaces.c **** * Colombia.
+  12:Src/interfaces/interfaces.c **** *
+  13:Src/interfaces/interfaces.c **** * http: www.invytec.com
+  14:Src/interfaces/interfaces.c **** * mail: hardware@invytec.com
+  15:Src/interfaces/interfaces.c **** *
+  16:Src/interfaces/interfaces.c **** * All rights reserved.
+  17:Src/interfaces/interfaces.c **** * ------------------------------------------------------------------------------
+  18:Src/interfaces/interfaces.c **** * Notes:
+  19:Src/interfaces/interfaces.c **** *
+  20:Src/interfaces/interfaces.c **** *******************************************************************************/
+  21:Src/interfaces/interfaces.c **** 
+  22:Src/interfaces/interfaces.c **** /*******************************************************************************
+  23:Src/interfaces/interfaces.c **** * HEADER FILES
+  24:Src/interfaces/interfaces.c **** *******************************************************************************/
+  25:Src/interfaces/interfaces.c **** /* ansi c */
+  26:Src/interfaces/interfaces.c **** 
+  27:Src/interfaces/interfaces.c **** /* propietary */
+  28:Src/interfaces/interfaces.c **** #include "stm32f0xx_hal.h"
+  29:Src/interfaces/interfaces.c **** #include "cmsis_os.h"
+  30:Src/interfaces/interfaces.c **** 
+ARM GAS  /tmp/ccgMorOM.s 			page 2
+
+
+  31:Src/interfaces/interfaces.c **** 
+  32:Src/interfaces/interfaces.c **** /* INVYTEC */
+  33:Src/interfaces/interfaces.c **** #include "../defines.h"
+  34:Src/interfaces/interfaces.c **** #include "interfaces.h"
+  35:Src/interfaces/interfaces.c **** #include "../Src/interfaces/uartGPS.h"
+  36:Src/interfaces/interfaces.c **** 
+  37:Src/interfaces/interfaces.c **** 
+  38:Src/interfaces/interfaces.c **** /* operation system */
+  39:Src/interfaces/interfaces.c **** 
+  40:Src/interfaces/interfaces.c **** 
+  41:Src/interfaces/interfaces.c **** 
+  42:Src/interfaces/interfaces.c **** /*******************************************************************************
+  43:Src/interfaces/interfaces.c **** * LOCAL CONSTANT DECLARATION
+  44:Src/interfaces/interfaces.c **** *******************************************************************************/
+  45:Src/interfaces/interfaces.c **** 
+  46:Src/interfaces/interfaces.c **** 
+  47:Src/interfaces/interfaces.c **** /*******************************************************************************
+  48:Src/interfaces/interfaces.c **** * LOCAL MACRO DECLARATION
+  49:Src/interfaces/interfaces.c **** *******************************************************************************/
+  50:Src/interfaces/interfaces.c **** 
+  51:Src/interfaces/interfaces.c **** 
+  52:Src/interfaces/interfaces.c **** 
+  53:Src/interfaces/interfaces.c **** /*******************************************************************************
+  54:Src/interfaces/interfaces.c **** * LOCAL NEW DATA TYPES
+  55:Src/interfaces/interfaces.c **** *******************************************************************************/
+  56:Src/interfaces/interfaces.c **** 
+  57:Src/interfaces/interfaces.c **** /**
+  58:Src/interfaces/interfaces.c **** @name  	    data type Name 
+  59:Src/interfaces/interfaces.c **** @brief	    Description
+  60:Src/interfaces/interfaces.c **** */
+  61:Src/interfaces/interfaces.c **** 
+  62:Src/interfaces/interfaces.c ****            
+  63:Src/interfaces/interfaces.c **** /*******************************************************************************
+  64:Src/interfaces/interfaces.c **** * LOCAL DATA DECLARATION
+  65:Src/interfaces/interfaces.c **** *******************************************************************************/
+  66:Src/interfaces/interfaces.c **** 
+  67:Src/interfaces/interfaces.c **** 
+  68:Src/interfaces/interfaces.c **** /*******************************************************************************
+  69:Src/interfaces/interfaces.c **** * Global Data Declaration
+  70:Src/interfaces/interfaces.c **** *******************************************************************************/
+  71:Src/interfaces/interfaces.c **** extern UART_HandleTypeDef huart2;
+  72:Src/interfaces/interfaces.c **** extern UART_HandleTypeDef huart4;
+  73:Src/interfaces/interfaces.c **** extern UART_HandleTypeDef huart6;
+  74:Src/interfaces/interfaces.c **** 
+  75:Src/interfaces/interfaces.c **** extern uint8 tempData;
+  76:Src/interfaces/interfaces.c **** 
+  77:Src/interfaces/interfaces.c **** extern osThreadId GPSTaskHandle;
+  78:Src/interfaces/interfaces.c **** 
+  79:Src/interfaces/interfaces.c **** /*******************************************************************************
+  80:Src/interfaces/interfaces.c **** * GLOBAL FUNCTION DECLARATION
+  81:Src/interfaces/interfaces.c **** *******************************************************************************/
+  82:Src/interfaces/interfaces.c **** 
+  83:Src/interfaces/interfaces.c **** 
+  84:Src/interfaces/interfaces.c **** /*******************************************************************************
+  85:Src/interfaces/interfaces.c **** * LOCAL FUNCTIONS DECLARATIONS
+  86:Src/interfaces/interfaces.c **** *******************************************************************************/
+  87:Src/interfaces/interfaces.c **** 
+ARM GAS  /tmp/ccgMorOM.s 			page 3
+
+
+  88:Src/interfaces/interfaces.c **** 
+  89:Src/interfaces/interfaces.c **** 
+  90:Src/interfaces/interfaces.c **** 
+  91:Src/interfaces/interfaces.c **** /*******************************************************************************
+  92:Src/interfaces/interfaces.c **** * LOCAL FUNCTIONS DEFINITIONS
+  93:Src/interfaces/interfaces.c **** *******************************************************************************/
+  94:Src/interfaces/interfaces.c **** 
+  95:Src/interfaces/interfaces.c **** 
+  96:Src/interfaces/interfaces.c **** /**********************************************************************************
+  97:Src/interfaces/interfaces.c **** Name:          	
+  98:Src/interfaces/interfaces.c **** Description:    
+  99:Src/interfaces/interfaces.c **** Parameters:     
+ 100:Src/interfaces/interfaces.c **** Returns:        
+ 101:Src/interfaces/interfaces.c **** **********************************************************************************/
+ 102:Src/interfaces/interfaces.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+ 103:Src/interfaces/interfaces.c **** {
+  29              		.loc 1 103 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104:Src/interfaces/interfaces.c ****     UART_HandleTypeDef *uartPort = (UART_HandleTypeDef*) UARTGPSData.InstanceUartPort;
+  33              		.loc 1 104 5 view .LVU1
+  34              		.loc 1 104 25 is_stmt 0 view .LVU2
+  35 0000 EF23     		movs	r3, #239
+ 103:Src/interfaces/interfaces.c ****     UART_HandleTypeDef *uartPort = (UART_HandleTypeDef*) UARTGPSData.InstanceUartPort;
+  36              		.loc 1 103 1 view .LVU3
+  37 0002 70B5     		push	{r4, r5, r6, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 16
+  40              		.cfi_offset 4, -16
+  41              		.cfi_offset 5, -12
+  42              		.cfi_offset 6, -8
+  43              		.cfi_offset 14, -4
+  44              		.loc 1 104 25 view .LVU4
+  45 0004 694C     		ldr	r4, .L31
+  46 0006 9B00     		lsls	r3, r3, #2
+  47 0008 E258     		ldr	r2, [r4, r3]
+  48              	.LVL1:
+ 105:Src/interfaces/interfaces.c ****     
+ 106:Src/interfaces/interfaces.c ****     if (huart->Instance == uartPort->Instance )	//GPS UART
+  49              		.loc 1 106 5 is_stmt 1 view .LVU5
+  50              		.loc 1 106 14 is_stmt 0 view .LVU6
+  51 000a 0368     		ldr	r3, [r0]
+  52              		.loc 1 106 8 view .LVU7
+  53 000c 1268     		ldr	r2, [r2]
+  54              	.LVL2:
+ 103:Src/interfaces/interfaces.c ****     UART_HandleTypeDef *uartPort = (UART_HandleTypeDef*) UARTGPSData.InstanceUartPort;
+  55              		.loc 1 103 1 view .LVU8
+  56 000e 0500     		movs	r5, r0
+  57              		.loc 1 106 8 view .LVU9
+  58 0010 9342     		cmp	r3, r2
+  59 0012 04D0     		beq	.L28
+ 107:Src/interfaces/interfaces.c ****     {
+ 108:Src/interfaces/interfaces.c ****         #define RX_BUFFER_SIZE             SIZE_BUFF_UART_GPS_RX
+ 109:Src/interfaces/interfaces.c ****         #define RX_FRAME_INDEX             UARTGPSData.u8RxFrameIndex
+ 110:Src/interfaces/interfaces.c ****         #define RX_FRAME_PROCESSED_INDEX   UARTGPSData.u8RxFrameProcessedIndex
+ 111:Src/interfaces/interfaces.c ****         #define RX_END_ARRAY               UARTGPSData.u16RxEndsFrameArray[RX_FRAME_INDEX]
+ARM GAS  /tmp/ccgMorOM.s 			page 4
+
+
+ 112:Src/interfaces/interfaces.c ****         #define RX_END_ARRAY_POS(i)        UARTGPSData.u16RxEndsFrameArray[i]
+ 113:Src/interfaces/interfaces.c ****         #define RX_HEADER_ARRAY            UARTGPSData.u16RxHeadersFrameArray[RX_FRAME_INDEX]
+ 114:Src/interfaces/interfaces.c ****         #define RX_HEADER_ARRAY_POS(i)     UARTGPSData.u16RxHeadersFrameArray[i]
+ 115:Src/interfaces/interfaces.c ****         #define RX_BUFFER_INDEX            UARTGPSData.u16RxBufferIndex
+ 116:Src/interfaces/interfaces.c ****         #define RX_BUFFER_PROCESSED_INDEX  UARTGPSData.u16RxBufferProcessedIndex
+ 117:Src/interfaces/interfaces.c ****         #define RX_BUFFER                  UARTGPSData.cDataUARTGPSRx[RX_BUFFER_INDEX]
+ 118:Src/interfaces/interfaces.c ****         #define RX_BUFFER_POS(i)           UARTGPSData.cDataUARTGPSRx[i]
+ 119:Src/interfaces/interfaces.c ****         #define RX_RAW_HEADER              UARTGPSData.cRawHeader
+ 120:Src/interfaces/interfaces.c ****         #define RX_DATABYTE                UARTGPSData.u8RxDataByte        
+ 121:Src/interfaces/interfaces.c **** 
+ 122:Src/interfaces/interfaces.c ****         if(RX_BUFFER_INDEX < RX_BUFFER_SIZE )
+ 123:Src/interfaces/interfaces.c ****         {
+ 124:Src/interfaces/interfaces.c ****             // NMEA protocol machine states
+ 125:Src/interfaces/interfaces.c ****             switch(RxUARTGPSStates)
+ 126:Src/interfaces/interfaces.c ****             {
+ 127:Src/interfaces/interfaces.c ****                 case NMEAPro_Idle:
+ 128:Src/interfaces/interfaces.c ****                 {
+ 129:Src/interfaces/interfaces.c ****                     break;
+ 130:Src/interfaces/interfaces.c ****                 }
+ 131:Src/interfaces/interfaces.c **** 
+ 132:Src/interfaces/interfaces.c ****                 case NMEAPro_RawData:
+ 133:Src/interfaces/interfaces.c ****                 {
+ 134:Src/interfaces/interfaces.c ****                     
+ 135:Src/interfaces/interfaces.c ****                     if ((RX_BUFFER_INDEX+1)<RX_BUFFER_SIZE) 
+ 136:Src/interfaces/interfaces.c ****                     {
+ 137:Src/interfaces/interfaces.c ****                         //save data into cDataUARTGPSRx(u16RxBufferIndex)
+ 138:Src/interfaces/interfaces.c ****                         RX_BUFFER = RX_DATABYTE;
+ 139:Src/interfaces/interfaces.c ****                         if ( (RX_RAW_HEADER==RX_DATABYTE)   &&
+ 140:Src/interfaces/interfaces.c ****                              (RX_RAW_HEADER!=0x00) )
+ 141:Src/interfaces/interfaces.c ****                         {
+ 142:Src/interfaces/interfaces.c ****                             
+ 143:Src/interfaces/interfaces.c ****                             if ( (RX_FRAME_INDEX+1) < SIZE_BUFF_HEADERS )  
+ 144:Src/interfaces/interfaces.c ****                             {
+ 145:Src/interfaces/interfaces.c ****                                //Save Header Position into u16RxHeadersArray(u8RxHeadersArrayIndex)
+ 146:Src/interfaces/interfaces.c ****                                 RX_HEADER_ARRAY = RX_BUFFER_INDEX;
+ 147:Src/interfaces/interfaces.c ****                                 //Reset End Position
+ 148:Src/interfaces/interfaces.c ****                                 RX_END_ARRAY = 0;
+ 149:Src/interfaces/interfaces.c ****                                 //Add +1 to u16RxBufferIndex
+ 150:Src/interfaces/interfaces.c ****                                 RX_FRAME_INDEX++; 
+ 151:Src/interfaces/interfaces.c ****                             }
+ 152:Src/interfaces/interfaces.c ****                             else
+ 153:Src/interfaces/interfaces.c ****                             {
+ 154:Src/interfaces/interfaces.c ****                                 UARTGPSMoreRawHeaderRecv = true;
+ 155:Src/interfaces/interfaces.c ****                             }
+ 156:Src/interfaces/interfaces.c ****                         }
+ 157:Src/interfaces/interfaces.c ****                         RX_BUFFER_INDEX++;
+ 158:Src/interfaces/interfaces.c ****                     }
+ 159:Src/interfaces/interfaces.c ****                     else
+ 160:Src/interfaces/interfaces.c ****                     {
+ 161:Src/interfaces/interfaces.c ****                         UARTGPSBufferFull = true;
+ 162:Src/interfaces/interfaces.c ****                     }
+ 163:Src/interfaces/interfaces.c ****                     break;
+ 164:Src/interfaces/interfaces.c ****                 } 
+ 165:Src/interfaces/interfaces.c ****                 
+ 166:Src/interfaces/interfaces.c ****                 case NMEAPro_WaitingHeader:
+ 167:Src/interfaces/interfaces.c ****                 {
+ 168:Src/interfaces/interfaces.c ****                     if ( RX_DATABYTE == 0x00 )
+ARM GAS  /tmp/ccgMorOM.s 			page 5
+
+
+ 169:Src/interfaces/interfaces.c ****                     {
+ 170:Src/interfaces/interfaces.c ****                         HAL_UART_Receive_IT(huart, (uint8_t*)&RX_DATABYTE, 1);
+ 171:Src/interfaces/interfaces.c ****                         return;
+ 172:Src/interfaces/interfaces.c ****                     }
+ 173:Src/interfaces/interfaces.c ****                     if(RX_DATABYTE == GPS_NMEAHeaderByte)
+ 174:Src/interfaces/interfaces.c ****                     {
+ 175:Src/interfaces/interfaces.c ****                         if (RX_FRAME_INDEX < SIZE_BUFF_HEADERS )
+ 176:Src/interfaces/interfaces.c ****                         {
+ 177:Src/interfaces/interfaces.c ****                             //save data into cDataUARTGPSRx(u16RxBufferIndex)
+ 178:Src/interfaces/interfaces.c ****                             RX_BUFFER = RX_DATABYTE;
+ 179:Src/interfaces/interfaces.c ****                             //Save Header Position into u16RxHeadersArray(u8RxHeadersArrayIndex)
+ 180:Src/interfaces/interfaces.c ****                             RX_HEADER_ARRAY = RX_BUFFER_INDEX;
+ 181:Src/interfaces/interfaces.c ****                             //Reset End Position
+ 182:Src/interfaces/interfaces.c ****                             RX_END_ARRAY = 0;
+ 183:Src/interfaces/interfaces.c ****                             //Add +1 to u16RxBufferIndex
+ 184:Src/interfaces/interfaces.c ****                             RX_BUFFER_INDEX++; 
+ 185:Src/interfaces/interfaces.c ****                             //Change state to NMEAPro_WaitingEnd
+ 186:Src/interfaces/interfaces.c ****                             RxUARTGPSStates = NMEAPro_WaitingEnd;
+ 187:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = true;
+ 188:Src/interfaces/interfaces.c ****                         }
+ 189:Src/interfaces/interfaces.c ****                         else
+ 190:Src/interfaces/interfaces.c ****                         {
+ 191:Src/interfaces/interfaces.c ****                             uartGPS_ResetUARTGPSData(NMEAPro_WaitingHeader);
+ 192:Src/interfaces/interfaces.c ****                         }
+ 193:Src/interfaces/interfaces.c ****                     }
+ 194:Src/interfaces/interfaces.c ****                     break;
+ 195:Src/interfaces/interfaces.c ****                 }
+ 196:Src/interfaces/interfaces.c ****                 
+ 197:Src/interfaces/interfaces.c ****                  case NMEAPro_WaitingEnd:
+ 198:Src/interfaces/interfaces.c ****                 {
+ 199:Src/interfaces/interfaces.c ****                     
+ 200:Src/interfaces/interfaces.c ****                     if ( (RX_BUFFER_INDEX+1) <= RX_BUFFER_SIZE )
+ 201:Src/interfaces/interfaces.c ****                     {
+ 202:Src/interfaces/interfaces.c ****                         //save data into cDataUARTGPSRx(u16RxBufferIndex)
+ 203:Src/interfaces/interfaces.c ****                         RX_BUFFER = RX_DATABYTE;
+ 204:Src/interfaces/interfaces.c ****             			// Detectar fin de comando
+ 205:Src/interfaces/interfaces.c ****             		    if(RX_DATABYTE == GPS_CR_Byte | RX_DATABYTE == GPS_LF_Byte )
+ 206:Src/interfaces/interfaces.c ****                         {
+ 207:Src/interfaces/interfaces.c ****                             //Save End Position into u16RxEndssArray(u8RxEndsIndex)
+ 208:Src/interfaces/interfaces.c ****                             RX_END_ARRAY = RX_BUFFER_INDEX;
+ 209:Src/interfaces/interfaces.c ****             				RxUARTGPSStates = NMEAPro_WaitingHeader;
+ 210:Src/interfaces/interfaces.c ****                             UARTGPSCommandRx = true;
+ 211:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = false;
+ 212:Src/interfaces/interfaces.c ****                             //Add +1 to u8RxFrameIndex
+ 213:Src/interfaces/interfaces.c ****                             RX_FRAME_INDEX++;
+ 214:Src/interfaces/interfaces.c ****                             vTaskResume(GPSTaskHandle);
+ 215:Src/interfaces/interfaces.c ****         			    }
+ 216:Src/interfaces/interfaces.c ****                         //Add +1 to u16RxBufferIndex
+ 217:Src/interfaces/interfaces.c ****                         RX_BUFFER_INDEX++;
+ 218:Src/interfaces/interfaces.c **** 
+ 219:Src/interfaces/interfaces.c ****                     }
+ 220:Src/interfaces/interfaces.c ****                     else
+ 221:Src/interfaces/interfaces.c ****                     {
+ 222:Src/interfaces/interfaces.c ****                         uartGPS_ResetUARTGPSData(NMEAPro_WaitingHeader);
+ 223:Src/interfaces/interfaces.c ****                     }
+ 224:Src/interfaces/interfaces.c ****                     break;
+ 225:Src/interfaces/interfaces.c ****                 }
+ARM GAS  /tmp/ccgMorOM.s 			page 6
+
+
+ 226:Src/interfaces/interfaces.c ****                                
+ 227:Src/interfaces/interfaces.c **** 
+ 228:Src/interfaces/interfaces.c ****                 
+ 229:Src/interfaces/interfaces.c ****                 default:
+ 230:Src/interfaces/interfaces.c ****                 {
+ 231:Src/interfaces/interfaces.c ****                     uartGPS_ResetUARTGPSData(NMEAPro_WaitingHeader);
+ 232:Src/interfaces/interfaces.c ****                     break;
+ 233:Src/interfaces/interfaces.c ****                 }
+ 234:Src/interfaces/interfaces.c ****             }
+ 235:Src/interfaces/interfaces.c ****         }
+ 236:Src/interfaces/interfaces.c ****         else
+ 237:Src/interfaces/interfaces.c ****         {
+ 238:Src/interfaces/interfaces.c ****             uartGPS_ResetUARTGPSData(NMEAPro_WaitingHeader);
+ 239:Src/interfaces/interfaces.c ****         }
+ 240:Src/interfaces/interfaces.c **** 
+ 241:Src/interfaces/interfaces.c ****         //activate UART6 receive interrupt every time
+ 242:Src/interfaces/interfaces.c ****         HAL_UART_Receive_IT(huart, (uint8_t*)&RX_DATABYTE, 1);
+ 243:Src/interfaces/interfaces.c **** 
+ 244:Src/interfaces/interfaces.c ****         #undef RX_BUFFER_SIZE
+ 245:Src/interfaces/interfaces.c ****         #undef RX_FRAME_INDEX
+ 246:Src/interfaces/interfaces.c ****         #undef RX_FRAME_PROCESSED_INDEX
+ 247:Src/interfaces/interfaces.c ****         #undef RX_END_ARRAY
+ 248:Src/interfaces/interfaces.c ****         #undef RX_END_ARRAY_POS
+ 249:Src/interfaces/interfaces.c ****         #undef RX_HEADER_ARRAY
+ 250:Src/interfaces/interfaces.c ****         #undef RX_HEADER_ARRAY_POS
+ 251:Src/interfaces/interfaces.c ****         #undef RX_BUFFER_INDEX
+ 252:Src/interfaces/interfaces.c ****         #undef RX_BUFFER_PROCESSED_INDEX
+ 253:Src/interfaces/interfaces.c ****         #undef RX_BUFFER
+ 254:Src/interfaces/interfaces.c ****         #undef RX_BUFFER_POS
+ 255:Src/interfaces/interfaces.c ****         #undef RX_RAW_HEADER
+ 256:Src/interfaces/interfaces.c ****         #undef RX_DATABYTE                
+ 257:Src/interfaces/interfaces.c ****     }
+ 258:Src/interfaces/interfaces.c ****     else if (huart->Instance == huart4.Instance)
+  60              		.loc 1 258 10 is_stmt 1 view .LVU10
+  61              		.loc 1 258 39 is_stmt 0 view .LVU11
+  62 0014 664C     		ldr	r4, .L31+4
+  63              		.loc 1 258 13 view .LVU12
+  64 0016 2268     		ldr	r2, [r4]
+  65 0018 9342     		cmp	r3, r2
+  66 001a 37D0     		beq	.L29
+  67              	.LVL3:
+  68              	.L1:
+ 259:Src/interfaces/interfaces.c ****     {   
+ 260:Src/interfaces/interfaces.c ****         HAL_GPIO_TogglePin(YellowLed_GPIO_Port , YellowLed_Pin);
+ 261:Src/interfaces/interfaces.c ****         HAL_UART_Transmit_IT( &huart4, (uint8_t*) &tempData, 1);
+ 262:Src/interfaces/interfaces.c ****         //vTaskDelay(1);
+ 263:Src/interfaces/interfaces.c ****         HAL_UART_Receive_IT( &huart4, &tempData, 1);
+ 264:Src/interfaces/interfaces.c ****     }
+ 265:Src/interfaces/interfaces.c **** }
+  69              		.loc 1 265 1 view .LVU13
+  70              		@ sp needed
+  71 001c 70BD     		pop	{r4, r5, r6, pc}
+  72              	.LVL4:
+  73              	.L28:
+ 122:Src/interfaces/interfaces.c ****         {
+  74              		.loc 1 122 9 is_stmt 1 view .LVU14
+ 122:Src/interfaces/interfaces.c ****         {
+ARM GAS  /tmp/ccgMorOM.s 			page 7
+
+
+  75              		.loc 1 122 12 is_stmt 0 view .LVU15
+  76 001e C122     		movs	r2, #193
+  77 0020 9200     		lsls	r2, r2, #2
+  78 0022 A35A     		ldrh	r3, [r4, r2]
+ 122:Src/interfaces/interfaces.c ****         {
+  79              		.loc 1 122 11 view .LVU16
+  80 0024 6349     		ldr	r1, .L31+8
+  81 0026 8B42     		cmp	r3, r1
+  82 0028 27D8     		bhi	.L26
+ 125:Src/interfaces/interfaces.c ****             {
+  83              		.loc 1 125 13 is_stmt 1 view .LVU17
+  84 002a 6348     		ldr	r0, .L31+12
+  85              	.LVL5:
+ 125:Src/interfaces/interfaces.c ****             {
+  86              		.loc 1 125 13 is_stmt 0 view .LVU18
+  87 002c 0378     		ldrb	r3, [r0]
+  88 002e DBB2     		uxtb	r3, r3
+  89 0030 012B     		cmp	r3, #1
+  90 0032 64D0     		beq	.L4
+  91 0034 002B     		cmp	r3, #0
+  92 0036 1AD0     		beq	.L5
+  93 0038 022B     		cmp	r3, #2
+  94 003a 38D0     		beq	.L6
+  95 003c 032B     		cmp	r3, #3
+  96 003e 1CD1     		bne	.L26
+ 200:Src/interfaces/interfaces.c ****                     {
+  97              		.loc 1 200 21 is_stmt 1 view .LVU19
+ 200:Src/interfaces/interfaces.c ****                     {
+  98              		.loc 1 200 27 is_stmt 0 view .LVU20
+  99 0040 A35A     		ldrh	r3, [r4, r2]
+ 200:Src/interfaces/interfaces.c ****                     {
+ 100              		.loc 1 200 24 view .LVU21
+ 101 0042 8B42     		cmp	r3, r1
+ 102 0044 19D8     		bhi	.L26
+ 203:Src/interfaces/interfaces.c ****             			// Detectar fin de comando
+ 103              		.loc 1 203 25 is_stmt 1 view .LVU22
+ 104 0046 A35A     		ldrh	r3, [r4, r2]
+ 203:Src/interfaces/interfaces.c ****             			// Detectar fin de comando
+ 105              		.loc 1 203 37 is_stmt 0 view .LVU23
+ 106 0048 6278     		ldrb	r2, [r4, #1]
+ 203:Src/interfaces/interfaces.c ****             			// Detectar fin de comando
+ 107              		.loc 1 203 35 view .LVU24
+ 108 004a E318     		adds	r3, r4, r3
+ 203:Src/interfaces/interfaces.c ****             			// Detectar fin de comando
+ 109              		.loc 1 203 37 view .LVU25
+ 110 004c D2B2     		uxtb	r2, r2
+ 203:Src/interfaces/interfaces.c ****             			// Detectar fin de comando
+ 111              		.loc 1 203 35 view .LVU26
+ 112 004e 1A71     		strb	r2, [r3, #4]
+ 205:Src/interfaces/interfaces.c ****                         {
+ 113              		.loc 1 205 19 is_stmt 1 view .LVU27
+ 205:Src/interfaces/interfaces.c ****                         {
+ 114              		.loc 1 205 22 is_stmt 0 view .LVU28
+ 115 0050 6278     		ldrb	r2, [r4, #1]
+ 205:Src/interfaces/interfaces.c ****                         {
+ 116              		.loc 1 205 51 view .LVU29
+ 117 0052 6378     		ldrb	r3, [r4, #1]
+ARM GAS  /tmp/ccgMorOM.s 			page 8
+
+
+ 118 0054 DBB2     		uxtb	r3, r3
+ 205:Src/interfaces/interfaces.c ****                         {
+ 119              		.loc 1 205 21 view .LVU30
+ 120 0056 0D2A     		cmp	r2, #13
+ 121 0058 00D1     		bne	.LCB85
+ 122 005a 7DE0     		b	.L16	@long jump
+ 123              	.LCB85:
+ 124 005c 0A2B     		cmp	r3, #10
+ 125 005e 00D1     		bne	.LCB90
+ 126 0060 7AE0     		b	.L16	@long jump
+ 127              	.LCB90:
+ 128              	.L14:
+ 217:Src/interfaces/interfaces.c **** 
+ 129              		.loc 1 217 25 is_stmt 1 view .LVU31
+ 130 0062 C122     		movs	r2, #193
+ 131 0064 9200     		lsls	r2, r2, #2
+ 132 0066 A35A     		ldrh	r3, [r4, r2]
+ 217:Src/interfaces/interfaces.c **** 
+ 133              		.loc 1 217 40 is_stmt 0 view .LVU32
+ 134 0068 0133     		adds	r3, r3, #1
+ 135 006a 9BB2     		uxth	r3, r3
+ 136 006c A352     		strh	r3, [r4, r2]
+ 137              	.L5:
+ 242:Src/interfaces/interfaces.c **** 
+ 138              		.loc 1 242 9 is_stmt 1 view .LVU33
+ 139 006e 0122     		movs	r2, #1
+ 140 0070 5249     		ldr	r1, .L31+16
+ 141 0072 2800     		movs	r0, r5
+ 142 0074 FFF7FEFF 		bl	HAL_UART_Receive_IT
+ 143              	.LVL6:
+ 144 0078 D0E7     		b	.L1
+ 145              	.L26:
+ 231:Src/interfaces/interfaces.c ****                     break;
+ 146              		.loc 1 231 21 view .LVU34
+ 147 007a 0220     		movs	r0, #2
+ 148 007c FFF7FEFF 		bl	uartGPS_ResetUARTGPSData
+ 149              	.LVL7:
+ 232:Src/interfaces/interfaces.c ****                 }
+ 150              		.loc 1 232 21 view .LVU35
+ 242:Src/interfaces/interfaces.c **** 
+ 151              		.loc 1 242 9 view .LVU36
+ 152 0080 0122     		movs	r2, #1
+ 153 0082 4E49     		ldr	r1, .L31+16
+ 154 0084 2800     		movs	r0, r5
+ 155 0086 FFF7FEFF 		bl	HAL_UART_Receive_IT
+ 156              	.LVL8:
+ 157 008a C7E7     		b	.L1
+ 158              	.LVL9:
+ 159              	.L29:
+ 260:Src/interfaces/interfaces.c ****         HAL_UART_Transmit_IT( &huart4, (uint8_t*) &tempData, 1);
+ 160              		.loc 1 260 9 view .LVU37
+ 161 008c 8021     		movs	r1, #128
+ 162 008e 4C48     		ldr	r0, .L31+20
+ 163              	.LVL10:
+ 260:Src/interfaces/interfaces.c ****         HAL_UART_Transmit_IT( &huart4, (uint8_t*) &tempData, 1);
+ 164              		.loc 1 260 9 is_stmt 0 view .LVU38
+ 165 0090 0901     		lsls	r1, r1, #4
+ARM GAS  /tmp/ccgMorOM.s 			page 9
+
+
+ 166 0092 FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 167              	.LVL11:
+ 261:Src/interfaces/interfaces.c ****         //vTaskDelay(1);
+ 168              		.loc 1 261 9 is_stmt 1 view .LVU39
+ 169 0096 4B4D     		ldr	r5, .L31+24
+ 170              	.LVL12:
+ 261:Src/interfaces/interfaces.c ****         //vTaskDelay(1);
+ 171              		.loc 1 261 9 is_stmt 0 view .LVU40
+ 172 0098 0122     		movs	r2, #1
+ 173 009a 2900     		movs	r1, r5
+ 174 009c 2000     		movs	r0, r4
+ 175 009e FFF7FEFF 		bl	HAL_UART_Transmit_IT
+ 176              	.LVL13:
+ 263:Src/interfaces/interfaces.c ****     }
+ 177              		.loc 1 263 9 is_stmt 1 view .LVU41
+ 178 00a2 0122     		movs	r2, #1
+ 179 00a4 2900     		movs	r1, r5
+ 180 00a6 2000     		movs	r0, r4
+ 181 00a8 FFF7FEFF 		bl	HAL_UART_Receive_IT
+ 182              	.LVL14:
+ 183 00ac B6E7     		b	.L1
+ 184              	.LVL15:
+ 185              	.L6:
+ 168:Src/interfaces/interfaces.c ****                     {
+ 186              		.loc 1 168 21 view .LVU42
+ 168:Src/interfaces/interfaces.c ****                     {
+ 187              		.loc 1 168 26 is_stmt 0 view .LVU43
+ 188 00ae 6378     		ldrb	r3, [r4, #1]
+ 168:Src/interfaces/interfaces.c ****                     {
+ 189              		.loc 1 168 24 view .LVU44
+ 190 00b0 002B     		cmp	r3, #0
+ 191 00b2 6ED0     		beq	.L30
+ 173:Src/interfaces/interfaces.c ****                     {
+ 192              		.loc 1 173 21 is_stmt 1 view .LVU45
+ 173:Src/interfaces/interfaces.c ****                     {
+ 193              		.loc 1 173 24 is_stmt 0 view .LVU46
+ 194 00b4 6378     		ldrb	r3, [r4, #1]
+ 173:Src/interfaces/interfaces.c ****                     {
+ 195              		.loc 1 173 23 view .LVU47
+ 196 00b6 242B     		cmp	r3, #36
+ 197 00b8 D9D1     		bne	.L5
+ 175:Src/interfaces/interfaces.c ****                         {
+ 198              		.loc 1 175 25 is_stmt 1 view .LVU48
+ 175:Src/interfaces/interfaces.c ****                         {
+ 199              		.loc 1 175 29 is_stmt 0 view .LVU49
+ 200 00ba A378     		ldrb	r3, [r4, #2]
+ 175:Src/interfaces/interfaces.c ****                         {
+ 201              		.loc 1 175 28 view .LVU50
+ 202 00bc 2C2B     		cmp	r3, #44
+ 203 00be DCD8     		bhi	.L26
+ 178:Src/interfaces/interfaces.c ****                             //Save Header Position into u16RxHeadersArray(u8RxHeadersArrayIndex)
+ 204              		.loc 1 178 29 is_stmt 1 view .LVU51
+ 205 00c0 A35A     		ldrh	r3, [r4, r2]
+ 178:Src/interfaces/interfaces.c ****                             //Save Header Position into u16RxHeadersArray(u8RxHeadersArrayIndex)
+ 206              		.loc 1 178 41 is_stmt 0 view .LVU52
+ 207 00c2 6178     		ldrb	r1, [r4, #1]
+ 178:Src/interfaces/interfaces.c ****                             //Save Header Position into u16RxHeadersArray(u8RxHeadersArrayIndex)
+ARM GAS  /tmp/ccgMorOM.s 			page 10
+
+
+ 208              		.loc 1 178 39 view .LVU53
+ 209 00c4 E318     		adds	r3, r4, r3
+ 178:Src/interfaces/interfaces.c ****                             //Save Header Position into u16RxHeadersArray(u8RxHeadersArrayIndex)
+ 210              		.loc 1 178 41 view .LVU54
+ 211 00c6 C9B2     		uxtb	r1, r1
+ 178:Src/interfaces/interfaces.c ****                             //Save Header Position into u16RxHeadersArray(u8RxHeadersArrayIndex)
+ 212              		.loc 1 178 39 view .LVU55
+ 213 00c8 1971     		strb	r1, [r3, #4]
+ 180:Src/interfaces/interfaces.c ****                             //Reset End Position
+ 214              		.loc 1 180 29 is_stmt 1 view .LVU56
+ 215 00ca A378     		ldrb	r3, [r4, #2]
+ 180:Src/interfaces/interfaces.c ****                             //Reset End Position
+ 216              		.loc 1 180 47 is_stmt 0 view .LVU57
+ 217 00cc A15A     		ldrh	r1, [r4, r2]
+ 180:Src/interfaces/interfaces.c ****                             //Reset End Position
+ 218              		.loc 1 180 45 view .LVU58
+ 219 00ce B133     		adds	r3, r3, #177
+ 220 00d0 FF33     		adds	r3, r3, #255
+ 221 00d2 5B00     		lsls	r3, r3, #1
+ 180:Src/interfaces/interfaces.c ****                             //Reset End Position
+ 222              		.loc 1 180 47 view .LVU59
+ 223 00d4 89B2     		uxth	r1, r1
+ 180:Src/interfaces/interfaces.c ****                             //Reset End Position
+ 224              		.loc 1 180 45 view .LVU60
+ 225 00d6 E318     		adds	r3, r4, r3
+ 226 00d8 5980     		strh	r1, [r3, #2]
+ 182:Src/interfaces/interfaces.c ****                             //Add +1 to u16RxBufferIndex
+ 227              		.loc 1 182 29 is_stmt 1 view .LVU61
+ 182:Src/interfaces/interfaces.c ****                             //Add +1 to u16RxBufferIndex
+ 228              		.loc 1 182 42 is_stmt 0 view .LVU62
+ 229 00da 0021     		movs	r1, #0
+ 182:Src/interfaces/interfaces.c ****                             //Add +1 to u16RxBufferIndex
+ 230              		.loc 1 182 29 view .LVU63
+ 231 00dc A378     		ldrb	r3, [r4, #2]
+ 182:Src/interfaces/interfaces.c ****                             //Add +1 to u16RxBufferIndex
+ 232              		.loc 1 182 42 view .LVU64
+ 233 00de 8533     		adds	r3, r3, #133
+ 234 00e0 FF33     		adds	r3, r3, #255
+ 235 00e2 5B00     		lsls	r3, r3, #1
+ 236 00e4 E152     		strh	r1, [r4, r3]
+ 184:Src/interfaces/interfaces.c ****                             //Change state to NMEAPro_WaitingEnd
+ 237              		.loc 1 184 29 is_stmt 1 view .LVU65
+ 238 00e6 A35A     		ldrh	r3, [r4, r2]
+ 187:Src/interfaces/interfaces.c ****                         }
+ 239              		.loc 1 187 50 is_stmt 0 view .LVU66
+ 240 00e8 0821     		movs	r1, #8
+ 184:Src/interfaces/interfaces.c ****                             //Change state to NMEAPro_WaitingEnd
+ 241              		.loc 1 184 44 view .LVU67
+ 242 00ea 0133     		adds	r3, r3, #1
+ 243 00ec 9BB2     		uxth	r3, r3
+ 244 00ee A352     		strh	r3, [r4, r2]
+ 186:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = true;
+ 245              		.loc 1 186 29 is_stmt 1 view .LVU68
+ 186:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = true;
+ 246              		.loc 1 186 45 is_stmt 0 view .LVU69
+ 247 00f0 0323     		movs	r3, #3
+ 187:Src/interfaces/interfaces.c ****                         }
+ARM GAS  /tmp/ccgMorOM.s 			page 11
+
+
+ 248              		.loc 1 187 50 view .LVU70
+ 249 00f2 354A     		ldr	r2, .L31+28
+ 186:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = true;
+ 250              		.loc 1 186 45 view .LVU71
+ 251 00f4 0370     		strb	r3, [r0]
+ 187:Src/interfaces/interfaces.c ****                         }
+ 252              		.loc 1 187 29 is_stmt 1 view .LVU72
+ 187:Src/interfaces/interfaces.c ****                         }
+ 253              		.loc 1 187 50 is_stmt 0 view .LVU73
+ 254 00f6 1378     		ldrb	r3, [r2]
+ 255 00f8 0B43     		orrs	r3, r1
+ 256 00fa 1370     		strb	r3, [r2]
+ 257 00fc B7E7     		b	.L5
+ 258              	.L4:
+ 135:Src/interfaces/interfaces.c ****                     {
+ 259              		.loc 1 135 21 is_stmt 1 view .LVU74
+ 135:Src/interfaces/interfaces.c ****                     {
+ 260              		.loc 1 135 24 is_stmt 0 view .LVU75
+ 261 00fe FF23     		movs	r3, #255
+ 135:Src/interfaces/interfaces.c ****                     {
+ 262              		.loc 1 135 26 view .LVU76
+ 263 0100 A15A     		ldrh	r1, [r4, r2]
+ 135:Src/interfaces/interfaces.c ****                     {
+ 264              		.loc 1 135 24 view .LVU77
+ 265 0102 5B00     		lsls	r3, r3, #1
+ 266 0104 9942     		cmp	r1, r3
+ 267 0106 21D8     		bhi	.L9
+ 138:Src/interfaces/interfaces.c ****                         if ( (RX_RAW_HEADER==RX_DATABYTE)   &&
+ 268              		.loc 1 138 25 is_stmt 1 view .LVU78
+ 269 0108 A35A     		ldrh	r3, [r4, r2]
+ 138:Src/interfaces/interfaces.c ****                         if ( (RX_RAW_HEADER==RX_DATABYTE)   &&
+ 270              		.loc 1 138 37 is_stmt 0 view .LVU79
+ 271 010a 6178     		ldrb	r1, [r4, #1]
+ 138:Src/interfaces/interfaces.c ****                         if ( (RX_RAW_HEADER==RX_DATABYTE)   &&
+ 272              		.loc 1 138 35 view .LVU80
+ 273 010c E318     		adds	r3, r4, r3
+ 138:Src/interfaces/interfaces.c ****                         if ( (RX_RAW_HEADER==RX_DATABYTE)   &&
+ 274              		.loc 1 138 37 view .LVU81
+ 275 010e C9B2     		uxtb	r1, r1
+ 138:Src/interfaces/interfaces.c ****                         if ( (RX_RAW_HEADER==RX_DATABYTE)   &&
+ 276              		.loc 1 138 35 view .LVU82
+ 277 0110 1971     		strb	r1, [r3, #4]
+ 139:Src/interfaces/interfaces.c ****                              (RX_RAW_HEADER!=0x00) )
+ 278              		.loc 1 139 25 is_stmt 1 view .LVU83
+ 139:Src/interfaces/interfaces.c ****                              (RX_RAW_HEADER!=0x00) )
+ 279              		.loc 1 139 31 is_stmt 0 view .LVU84
+ 280 0112 2178     		ldrb	r1, [r4]
+ 139:Src/interfaces/interfaces.c ****                              (RX_RAW_HEADER!=0x00) )
+ 281              		.loc 1 139 46 view .LVU85
+ 282 0114 6378     		ldrb	r3, [r4, #1]
+ 139:Src/interfaces/interfaces.c ****                              (RX_RAW_HEADER!=0x00) )
+ 283              		.loc 1 139 28 view .LVU86
+ 284 0116 9942     		cmp	r1, r3
+ 285 0118 A3D1     		bne	.L14
+ 140:Src/interfaces/interfaces.c ****                         {
+ 286              		.loc 1 140 31 discriminator 1 view .LVU87
+ 287 011a 2378     		ldrb	r3, [r4]
+ARM GAS  /tmp/ccgMorOM.s 			page 12
+
+
+ 139:Src/interfaces/interfaces.c ****                              (RX_RAW_HEADER!=0x00) )
+ 288              		.loc 1 139 61 discriminator 1 view .LVU88
+ 289 011c 002B     		cmp	r3, #0
+ 290 011e A0D0     		beq	.L14
+ 143:Src/interfaces/interfaces.c ****                             {
+ 291              		.loc 1 143 29 is_stmt 1 view .LVU89
+ 143:Src/interfaces/interfaces.c ****                             {
+ 292              		.loc 1 143 35 is_stmt 0 view .LVU90
+ 293 0120 A378     		ldrb	r3, [r4, #2]
+ 143:Src/interfaces/interfaces.c ****                             {
+ 294              		.loc 1 143 32 view .LVU91
+ 295 0122 2B2B     		cmp	r3, #43
+ 296 0124 3BD8     		bhi	.L11
+ 146:Src/interfaces/interfaces.c ****                                 //Reset End Position
+ 297              		.loc 1 146 33 is_stmt 1 view .LVU92
+ 298 0126 A378     		ldrb	r3, [r4, #2]
+ 146:Src/interfaces/interfaces.c ****                                 //Reset End Position
+ 299              		.loc 1 146 51 is_stmt 0 view .LVU93
+ 300 0128 A25A     		ldrh	r2, [r4, r2]
+ 146:Src/interfaces/interfaces.c ****                                 //Reset End Position
+ 301              		.loc 1 146 49 view .LVU94
+ 302 012a B133     		adds	r3, r3, #177
+ 303 012c FF33     		adds	r3, r3, #255
+ 304 012e 5B00     		lsls	r3, r3, #1
+ 146:Src/interfaces/interfaces.c ****                                 //Reset End Position
+ 305              		.loc 1 146 51 view .LVU95
+ 306 0130 92B2     		uxth	r2, r2
+ 146:Src/interfaces/interfaces.c ****                                 //Reset End Position
+ 307              		.loc 1 146 49 view .LVU96
+ 308 0132 E318     		adds	r3, r4, r3
+ 309 0134 5A80     		strh	r2, [r3, #2]
+ 148:Src/interfaces/interfaces.c ****                                 //Add +1 to u16RxBufferIndex
+ 310              		.loc 1 148 33 is_stmt 1 view .LVU97
+ 148:Src/interfaces/interfaces.c ****                                 //Add +1 to u16RxBufferIndex
+ 311              		.loc 1 148 46 is_stmt 0 view .LVU98
+ 312 0136 0022     		movs	r2, #0
+ 148:Src/interfaces/interfaces.c ****                                 //Add +1 to u16RxBufferIndex
+ 313              		.loc 1 148 33 view .LVU99
+ 314 0138 A378     		ldrb	r3, [r4, #2]
+ 148:Src/interfaces/interfaces.c ****                                 //Add +1 to u16RxBufferIndex
+ 315              		.loc 1 148 46 view .LVU100
+ 316 013a 8533     		adds	r3, r3, #133
+ 317 013c FF33     		adds	r3, r3, #255
+ 318 013e 5B00     		lsls	r3, r3, #1
+ 319 0140 E252     		strh	r2, [r4, r3]
+ 150:Src/interfaces/interfaces.c ****                             }
+ 320              		.loc 1 150 33 is_stmt 1 view .LVU101
+ 321 0142 A378     		ldrb	r3, [r4, #2]
+ 150:Src/interfaces/interfaces.c ****                             }
+ 322              		.loc 1 150 47 is_stmt 0 view .LVU102
+ 323 0144 0133     		adds	r3, r3, #1
+ 324 0146 DBB2     		uxtb	r3, r3
+ 325 0148 A370     		strb	r3, [r4, #2]
+ 326 014a 8AE7     		b	.L14
+ 327              	.L9:
+ 161:Src/interfaces/interfaces.c ****                     }
+ 328              		.loc 1 161 25 is_stmt 1 view .LVU103
+ARM GAS  /tmp/ccgMorOM.s 			page 13
+
+
+ 161:Src/interfaces/interfaces.c ****                     }
+ 329              		.loc 1 161 43 is_stmt 0 view .LVU104
+ 330 014c 1021     		movs	r1, #16
+ 331 014e 1E4A     		ldr	r2, .L31+28
+ 332 0150 1378     		ldrb	r3, [r2]
+ 333 0152 0B43     		orrs	r3, r1
+ 334 0154 1370     		strb	r3, [r2]
+ 335 0156 8AE7     		b	.L5
+ 336              	.L16:
+ 208:Src/interfaces/interfaces.c ****             				RxUARTGPSStates = NMEAPro_WaitingHeader;
+ 337              		.loc 1 208 29 is_stmt 1 view .LVU105
+ 208:Src/interfaces/interfaces.c ****             				RxUARTGPSStates = NMEAPro_WaitingHeader;
+ 338              		.loc 1 208 44 is_stmt 0 view .LVU106
+ 339 0158 C122     		movs	r2, #193
+ 208:Src/interfaces/interfaces.c ****             				RxUARTGPSStates = NMEAPro_WaitingHeader;
+ 340              		.loc 1 208 29 view .LVU107
+ 341 015a A378     		ldrb	r3, [r4, #2]
+ 208:Src/interfaces/interfaces.c ****             				RxUARTGPSStates = NMEAPro_WaitingHeader;
+ 342              		.loc 1 208 44 view .LVU108
+ 343 015c 9200     		lsls	r2, r2, #2
+ 344 015e A25A     		ldrh	r2, [r4, r2]
+ 208:Src/interfaces/interfaces.c ****             				RxUARTGPSStates = NMEAPro_WaitingHeader;
+ 345              		.loc 1 208 42 view .LVU109
+ 346 0160 8533     		adds	r3, r3, #133
+ 347 0162 FF33     		adds	r3, r3, #255
+ 208:Src/interfaces/interfaces.c ****             				RxUARTGPSStates = NMEAPro_WaitingHeader;
+ 348              		.loc 1 208 44 view .LVU110
+ 349 0164 92B2     		uxth	r2, r2
+ 208:Src/interfaces/interfaces.c ****             				RxUARTGPSStates = NMEAPro_WaitingHeader;
+ 350              		.loc 1 208 42 view .LVU111
+ 351 0166 5B00     		lsls	r3, r3, #1
+ 352 0168 E252     		strh	r2, [r4, r3]
+ 209:Src/interfaces/interfaces.c ****                             UARTGPSCommandRx = true;
+ 353              		.loc 1 209 17 is_stmt 1 view .LVU112
+ 209:Src/interfaces/interfaces.c ****                             UARTGPSCommandRx = true;
+ 354              		.loc 1 209 33 is_stmt 0 view .LVU113
+ 355 016a 0223     		movs	r3, #2
+ 210:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = false;
+ 356              		.loc 1 210 46 view .LVU114
+ 357 016c 0221     		movs	r1, #2
+ 209:Src/interfaces/interfaces.c ****                             UARTGPSCommandRx = true;
+ 358              		.loc 1 209 33 view .LVU115
+ 359 016e 0370     		strb	r3, [r0]
+ 210:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = false;
+ 360              		.loc 1 210 29 is_stmt 1 view .LVU116
+ 210:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = false;
+ 361              		.loc 1 210 46 is_stmt 0 view .LVU117
+ 362 0170 154B     		ldr	r3, .L31+28
+ 363 0172 1A78     		ldrb	r2, [r3]
+ 364 0174 0A43     		orrs	r2, r1
+ 211:Src/interfaces/interfaces.c ****                             //Add +1 to u8RxFrameIndex
+ 365              		.loc 1 211 50 view .LVU118
+ 366 0176 0821     		movs	r1, #8
+ 210:Src/interfaces/interfaces.c ****                             UARTGPSReceivingData = false;
+ 367              		.loc 1 210 46 view .LVU119
+ 368 0178 1A70     		strb	r2, [r3]
+ 211:Src/interfaces/interfaces.c ****                             //Add +1 to u8RxFrameIndex
+ARM GAS  /tmp/ccgMorOM.s 			page 14
+
+
+ 369              		.loc 1 211 29 is_stmt 1 view .LVU120
+ 211:Src/interfaces/interfaces.c ****                             //Add +1 to u8RxFrameIndex
+ 370              		.loc 1 211 50 is_stmt 0 view .LVU121
+ 371 017a 1A78     		ldrb	r2, [r3]
+ 372 017c 8A43     		bics	r2, r1
+ 373 017e 1A70     		strb	r2, [r3]
+ 213:Src/interfaces/interfaces.c ****                             vTaskResume(GPSTaskHandle);
+ 374              		.loc 1 213 29 is_stmt 1 view .LVU122
+ 375 0180 A378     		ldrb	r3, [r4, #2]
+ 213:Src/interfaces/interfaces.c ****                             vTaskResume(GPSTaskHandle);
+ 376              		.loc 1 213 43 is_stmt 0 view .LVU123
+ 377 0182 0133     		adds	r3, r3, #1
+ 378 0184 DBB2     		uxtb	r3, r3
+ 379 0186 A370     		strb	r3, [r4, #2]
+ 214:Src/interfaces/interfaces.c ****         			    }
+ 380              		.loc 1 214 29 is_stmt 1 view .LVU124
+ 381 0188 104B     		ldr	r3, .L31+32
+ 382 018a 1868     		ldr	r0, [r3]
+ 383 018c FFF7FEFF 		bl	vTaskResume
+ 384              	.LVL16:
+ 385 0190 67E7     		b	.L14
+ 386              	.L30:
+ 170:Src/interfaces/interfaces.c ****                         return;
+ 387              		.loc 1 170 25 view .LVU125
+ 388 0192 611C     		adds	r1, r4, #1
+ 389 0194 0122     		movs	r2, #1
+ 390 0196 2800     		movs	r0, r5
+ 391 0198 FFF7FEFF 		bl	HAL_UART_Receive_IT
+ 392              	.LVL17:
+ 171:Src/interfaces/interfaces.c ****                     }
+ 393              		.loc 1 171 25 view .LVU126
+ 394 019c 3EE7     		b	.L1
+ 395              	.L11:
+ 154:Src/interfaces/interfaces.c ****                             }
+ 396              		.loc 1 154 33 view .LVU127
+ 154:Src/interfaces/interfaces.c ****                             }
+ 397              		.loc 1 154 58 is_stmt 0 view .LVU128
+ 398 019e 2021     		movs	r1, #32
+ 399 01a0 094A     		ldr	r2, .L31+28
+ 400 01a2 1378     		ldrb	r3, [r2]
+ 401 01a4 0B43     		orrs	r3, r1
+ 402 01a6 1370     		strb	r3, [r2]
+ 157:Src/interfaces/interfaces.c ****                     }
+ 403              		.loc 1 157 25 is_stmt 1 view .LVU129
+ 404 01a8 5BE7     		b	.L14
+ 405              	.L32:
+ 406 01aa C046     		.align	2
+ 407              	.L31:
+ 408 01ac 00000000 		.word	UARTGPSData
+ 409 01b0 00000000 		.word	huart4
+ 410 01b4 FF010000 		.word	511
+ 411 01b8 00000000 		.word	RxUARTGPSStates
+ 412 01bc 01000000 		.word	UARTGPSData+1
+ 413 01c0 00040048 		.word	1207960576
+ 414 01c4 00000000 		.word	tempData
+ 415 01c8 00000000 		.word	UARTGPSPacketFlags
+ 416 01cc 00000000 		.word	GPSTaskHandle
+ARM GAS  /tmp/ccgMorOM.s 			page 15
+
+
+ 417              		.cfi_endproc
+ 418              	.LFE37:
+ 420              		.section	.text.Interfaces_SelectUartUARTGPSData,"ax",%progbits
+ 421              		.align	1
+ 422              		.p2align 2,,3
+ 423              		.global	Interfaces_SelectUartUARTGPSData
+ 424              		.syntax unified
+ 425              		.code	16
+ 426              		.thumb_func
+ 427              		.fpu softvfp
+ 429              	Interfaces_SelectUartUARTGPSData:
+ 430              	.LVL18:
+ 431              	.LFB38:
+ 266:Src/interfaces/interfaces.c **** 
+ 267:Src/interfaces/interfaces.c **** /***********************************************************************************
+ 268:Src/interfaces/interfaces.c **** End of function 
+ 269:Src/interfaces/interfaces.c **** ***********************************************************************************/
+ 270:Src/interfaces/interfaces.c **** 
+ 271:Src/interfaces/interfaces.c **** 
+ 272:Src/interfaces/interfaces.c **** 
+ 273:Src/interfaces/interfaces.c **** /**********************************************************************************
+ 274:Src/interfaces/interfaces.c **** Name:          	uartGPS_ChangeUartUARTGPSData
+ 275:Src/interfaces/interfaces.c **** Description:    allow changes GPS  uart port
+ 276:Src/interfaces/interfaces.c **** Parameters:     Port
+ 277:Src/interfaces/interfaces.c **** Returns:        none
+ 278:Src/interfaces/interfaces.c **** **********************************************************************************/
+ 279:Src/interfaces/interfaces.c **** void * Interfaces_SelectUartUARTGPSData(void *uport)
+ 280:Src/interfaces/interfaces.c **** {
+ 432              		.loc 1 280 1 view -0
+ 433              		.cfi_startproc
+ 434              		@ args = 0, pretend = 0, frame = 0
+ 435              		@ frame_needed = 0, uses_anonymous_args = 0
+ 281:Src/interfaces/interfaces.c ****    eUartPorts port = *(eUartPorts *) uport;
+ 436              		.loc 1 281 4 view .LVU131
+ 437              		.loc 1 281 15 is_stmt 0 view .LVU132
+ 438 0000 0378     		ldrb	r3, [r0]
+ 439              	.LVL19:
+ 282:Src/interfaces/interfaces.c ****    void *rta = NULL;
+ 440              		.loc 1 282 4 is_stmt 1 view .LVU133
+ 283:Src/interfaces/interfaces.c ****     switch (port)
+ 441              		.loc 1 283 5 view .LVU134
+ 280:Src/interfaces/interfaces.c ****    eUartPorts port = *(eUartPorts *) uport;
+ 442              		.loc 1 280 1 is_stmt 0 view .LVU135
+ 443 0002 10B5     		push	{r4, lr}
+ 444              	.LCFI1:
+ 445              		.cfi_def_cfa_offset 8
+ 446              		.cfi_offset 4, -8
+ 447              		.cfi_offset 14, -4
+ 448              		.loc 1 283 5 view .LVU136
+ 449 0004 042B     		cmp	r3, #4
+ 450 0006 0FD0     		beq	.L36
+ 451 0008 062B     		cmp	r3, #6
+ 452 000a 04D0     		beq	.L37
+ 284:Src/interfaces/interfaces.c ****     {
+ 285:Src/interfaces/interfaces.c ****         case UART1:
+ 286:Src/interfaces/interfaces.c ****         {
+ 287:Src/interfaces/interfaces.c ****             rta = NULL;
+ARM GAS  /tmp/ccgMorOM.s 			page 16
+
+
+ 453              		.loc 1 287 17 view .LVU137
+ 454 000c 0024     		movs	r4, #0
+ 283:Src/interfaces/interfaces.c ****     {
+ 455              		.loc 1 283 5 view .LVU138
+ 456 000e 022B     		cmp	r3, #2
+ 457 0010 08D0     		beq	.L39
+ 458              	.LVL20:
+ 459              	.L33:
+ 288:Src/interfaces/interfaces.c ****             break;
+ 289:Src/interfaces/interfaces.c ****         }
+ 290:Src/interfaces/interfaces.c ****         case UART2:
+ 291:Src/interfaces/interfaces.c ****         {
+ 292:Src/interfaces/interfaces.c ****             rta = (UART_HandleTypeDef*) &huart2;
+ 293:Src/interfaces/interfaces.c ****             break;
+ 294:Src/interfaces/interfaces.c ****         }
+ 295:Src/interfaces/interfaces.c ****         case UART3:
+ 296:Src/interfaces/interfaces.c ****         {
+ 297:Src/interfaces/interfaces.c ****             rta = NULL;
+ 298:Src/interfaces/interfaces.c ****             break;
+ 299:Src/interfaces/interfaces.c ****         }
+ 300:Src/interfaces/interfaces.c ****         case UART4:
+ 301:Src/interfaces/interfaces.c ****         {
+ 302:Src/interfaces/interfaces.c ****             rta = (UART_HandleTypeDef*) &huart4;
+ 303:Src/interfaces/interfaces.c ****             break;
+ 304:Src/interfaces/interfaces.c ****         }
+ 305:Src/interfaces/interfaces.c ****         case UART5:
+ 306:Src/interfaces/interfaces.c ****         {
+ 307:Src/interfaces/interfaces.c ****             rta = NULL;
+ 308:Src/interfaces/interfaces.c ****             break;
+ 309:Src/interfaces/interfaces.c ****         }
+ 310:Src/interfaces/interfaces.c ****         case UART6:
+ 311:Src/interfaces/interfaces.c ****         {
+ 312:Src/interfaces/interfaces.c ****             rta = (UART_HandleTypeDef*) &huart6;
+ 313:Src/interfaces/interfaces.c ****             break;
+ 314:Src/interfaces/interfaces.c ****         }
+ 315:Src/interfaces/interfaces.c ****         case UART7:
+ 316:Src/interfaces/interfaces.c ****         {
+ 317:Src/interfaces/interfaces.c ****             rta = NULL;
+ 318:Src/interfaces/interfaces.c ****             break;
+ 319:Src/interfaces/interfaces.c ****         }
+ 320:Src/interfaces/interfaces.c ****         case UART8:
+ 321:Src/interfaces/interfaces.c ****         {
+ 322:Src/interfaces/interfaces.c ****             rta = NULL;
+ 323:Src/interfaces/interfaces.c ****             break;
+ 324:Src/interfaces/interfaces.c ****         }
+ 325:Src/interfaces/interfaces.c ****         default:
+ 326:Src/interfaces/interfaces.c ****         {
+ 327:Src/interfaces/interfaces.c ****             rta = NULL;
+ 328:Src/interfaces/interfaces.c ****             break;
+ 329:Src/interfaces/interfaces.c ****         }
+ 330:Src/interfaces/interfaces.c ****     }
+ 331:Src/interfaces/interfaces.c ****     if (rta != NULL )
+ 332:Src/interfaces/interfaces.c ****     {
+ 333:Src/interfaces/interfaces.c ****         HAL_UART_Receive_IT(rta, (uint8_t*)&UARTGPSData.u8RxDataByte, 1);
+ 334:Src/interfaces/interfaces.c ****     }
+ 335:Src/interfaces/interfaces.c ****     return rta;
+ 336:Src/interfaces/interfaces.c **** }
+ARM GAS  /tmp/ccgMorOM.s 			page 17
+
+
+ 460              		.loc 1 336 1 view .LVU139
+ 461 0012 2000     		movs	r0, r4
+ 462              		@ sp needed
+ 463 0014 10BD     		pop	{r4, pc}
+ 464              	.LVL21:
+ 465              	.L37:
+ 312:Src/interfaces/interfaces.c ****             break;
+ 466              		.loc 1 312 17 view .LVU140
+ 467 0016 054C     		ldr	r4, .L40
+ 468              	.L34:
+ 469              	.LVL22:
+ 331:Src/interfaces/interfaces.c ****     {
+ 470              		.loc 1 331 5 is_stmt 1 view .LVU141
+ 333:Src/interfaces/interfaces.c ****     }
+ 471              		.loc 1 333 9 view .LVU142
+ 472 0018 0122     		movs	r2, #1
+ 473 001a 0549     		ldr	r1, .L40+4
+ 474 001c 2000     		movs	r0, r4
+ 475              	.LVL23:
+ 333:Src/interfaces/interfaces.c ****     }
+ 476              		.loc 1 333 9 is_stmt 0 view .LVU143
+ 477 001e FFF7FEFF 		bl	HAL_UART_Receive_IT
+ 478              	.LVL24:
+ 333:Src/interfaces/interfaces.c ****     }
+ 479              		.loc 1 333 9 view .LVU144
+ 480 0022 F6E7     		b	.L33
+ 481              	.LVL25:
+ 482              	.L39:
+ 292:Src/interfaces/interfaces.c ****             break;
+ 483              		.loc 1 292 17 view .LVU145
+ 484 0024 034C     		ldr	r4, .L40+8
+ 485 0026 F7E7     		b	.L34
+ 486              	.L36:
+ 302:Src/interfaces/interfaces.c ****             break;
+ 487              		.loc 1 302 17 view .LVU146
+ 488 0028 034C     		ldr	r4, .L40+12
+ 489 002a F5E7     		b	.L34
+ 490              	.L41:
+ 491              		.align	2
+ 492              	.L40:
+ 493 002c 00000000 		.word	huart6
+ 494 0030 01000000 		.word	UARTGPSData+1
+ 495 0034 00000000 		.word	huart2
+ 496 0038 00000000 		.word	huart4
+ 497              		.cfi_endproc
+ 498              	.LFE38:
+ 500              		.section	.text.InterfacesSendDataGPS,"ax",%progbits
+ 501              		.align	1
+ 502              		.p2align 2,,3
+ 503              		.global	InterfacesSendDataGPS
+ 504              		.syntax unified
+ 505              		.code	16
+ 506              		.thumb_func
+ 507              		.fpu softvfp
+ 509              	InterfacesSendDataGPS:
+ 510              	.LVL26:
+ 511              	.LFB39:
+ARM GAS  /tmp/ccgMorOM.s 			page 18
+
+
+ 337:Src/interfaces/interfaces.c **** /***********************************************************************************
+ 338:Src/interfaces/interfaces.c **** End of function uartGPS_ChangeUartUARTGPSData
+ 339:Src/interfaces/interfaces.c **** ***********************************************************************************/
+ 340:Src/interfaces/interfaces.c **** 
+ 341:Src/interfaces/interfaces.c **** 
+ 342:Src/interfaces/interfaces.c **** 
+ 343:Src/interfaces/interfaces.c **** 
+ 344:Src/interfaces/interfaces.c **** 
+ 345:Src/interfaces/interfaces.c **** /**********************************************************************************
+ 346:Src/interfaces/interfaces.c **** Name:         InterfacesSendDataGPS
+ 347:Src/interfaces/interfaces.c **** Description:    
+ 348:Src/interfaces/interfaces.c **** Parameters:   data, bytes
+ 349:Src/interfaces/interfaces.c **** Returns:        
+ 350:Src/interfaces/interfaces.c **** **********************************************************************************/
+ 351:Src/interfaces/interfaces.c **** void InterfacesSendDataGPS( uint8 *data, uint16 bytes)
+ 352:Src/interfaces/interfaces.c **** {   
+ 512              		.loc 1 352 1 is_stmt 1 view -0
+ 513              		.cfi_startproc
+ 514              		@ args = 0, pretend = 0, frame = 0
+ 515              		@ frame_needed = 0, uses_anonymous_args = 0
+ 353:Src/interfaces/interfaces.c ****     if ( UARTGPSData.InstanceUartPort == NULL )
+ 516              		.loc 1 353 5 view .LVU148
+ 517              		.loc 1 353 21 is_stmt 0 view .LVU149
+ 518 0000 EF23     		movs	r3, #239
+ 352:Src/interfaces/interfaces.c ****     if ( UARTGPSData.InstanceUartPort == NULL )
+ 519              		.loc 1 352 1 view .LVU150
+ 520 0002 70B5     		push	{r4, r5, r6, lr}
+ 521              	.LCFI2:
+ 522              		.cfi_def_cfa_offset 16
+ 523              		.cfi_offset 4, -16
+ 524              		.cfi_offset 5, -12
+ 525              		.cfi_offset 6, -8
+ 526              		.cfi_offset 14, -4
+ 527              		.loc 1 353 21 view .LVU151
+ 528 0004 054C     		ldr	r4, .L47
+ 529 0006 9B00     		lsls	r3, r3, #2
+ 530 0008 E558     		ldr	r5, [r4, r3]
+ 531              		.loc 1 353 8 view .LVU152
+ 532 000a 002D     		cmp	r5, #0
+ 533 000c 05D0     		beq	.L42
+ 354:Src/interfaces/interfaces.c ****     {
+ 355:Src/interfaces/interfaces.c ****         return;
+ 356:Src/interfaces/interfaces.c ****     }
+ 357:Src/interfaces/interfaces.c ****     HAL_UART_Transmit_IT((UART_HandleTypeDef*) UARTGPSData.InstanceUartPort, data,  bytes);
+ 534              		.loc 1 357 5 is_stmt 1 view .LVU153
+ 535              		.loc 1 357 59 is_stmt 0 view .LVU154
+ 536 000e E358     		ldr	r3, [r4, r3]
+ 537              		.loc 1 357 5 view .LVU155
+ 538 0010 0A00     		movs	r2, r1
+ 539 0012 0100     		movs	r1, r0
+ 540              	.LVL27:
+ 541              		.loc 1 357 5 view .LVU156
+ 542 0014 1800     		movs	r0, r3
+ 543              	.LVL28:
+ 544              		.loc 1 357 5 view .LVU157
+ 545 0016 FFF7FEFF 		bl	HAL_UART_Transmit_IT
+ 546              	.LVL29:
+ARM GAS  /tmp/ccgMorOM.s 			page 19
+
+
+ 547              	.L42:
+ 358:Src/interfaces/interfaces.c **** }
+ 548              		.loc 1 358 1 view .LVU158
+ 549              		@ sp needed
+ 550 001a 70BD     		pop	{r4, r5, r6, pc}
+ 551              	.L48:
+ 552              		.align	2
+ 553              	.L47:
+ 554 001c 00000000 		.word	UARTGPSData
+ 555              		.cfi_endproc
+ 556              	.LFE39:
+ 558              		.section	.text.InterfacesSendDataCli,"ax",%progbits
+ 559              		.align	1
+ 560              		.p2align 2,,3
+ 561              		.global	InterfacesSendDataCli
+ 562              		.syntax unified
+ 563              		.code	16
+ 564              		.thumb_func
+ 565              		.fpu softvfp
+ 567              	InterfacesSendDataCli:
+ 568              	.LVL30:
+ 569              	.LFB40:
+ 359:Src/interfaces/interfaces.c **** /***********************************************************************************
+ 360:Src/interfaces/interfaces.c **** End of function 
+ 361:Src/interfaces/interfaces.c **** ***********************************************************************************/
+ 362:Src/interfaces/interfaces.c **** 
+ 363:Src/interfaces/interfaces.c **** 
+ 364:Src/interfaces/interfaces.c **** 
+ 365:Src/interfaces/interfaces.c **** /**********************************************************************************
+ 366:Src/interfaces/interfaces.c **** Name:         InterfacesSendDataGPS
+ 367:Src/interfaces/interfaces.c **** Description:    
+ 368:Src/interfaces/interfaces.c **** Parameters:   data, bytes
+ 369:Src/interfaces/interfaces.c **** Returns:        
+ 370:Src/interfaces/interfaces.c **** **********************************************************************************/
+ 371:Src/interfaces/interfaces.c **** void InterfacesSendDataCli( uint8 *data, uint16 bytes)
+ 372:Src/interfaces/interfaces.c **** {   
+ 570              		.loc 1 372 1 is_stmt 1 view -0
+ 571              		.cfi_startproc
+ 572              		@ args = 0, pretend = 0, frame = 0
+ 573              		@ frame_needed = 0, uses_anonymous_args = 0
+ 373:Src/interfaces/interfaces.c ****     HAL_UART_Transmit_IT((UART_HandleTypeDef*) &huart4, data,  bytes);
+ 574              		.loc 1 373 5 view .LVU160
+ 372:Src/interfaces/interfaces.c ****     HAL_UART_Transmit_IT((UART_HandleTypeDef*) &huart4, data,  bytes);
+ 575              		.loc 1 372 1 is_stmt 0 view .LVU161
+ 576 0000 10B5     		push	{r4, lr}
+ 577              	.LCFI3:
+ 578              		.cfi_def_cfa_offset 8
+ 579              		.cfi_offset 4, -8
+ 580              		.cfi_offset 14, -4
+ 372:Src/interfaces/interfaces.c ****     HAL_UART_Transmit_IT((UART_HandleTypeDef*) &huart4, data,  bytes);
+ 581              		.loc 1 372 1 view .LVU162
+ 582 0002 0A00     		movs	r2, r1
+ 583              		.loc 1 373 5 view .LVU163
+ 584 0004 0100     		movs	r1, r0
+ 585              	.LVL31:
+ 586              		.loc 1 373 5 view .LVU164
+ 587 0006 0248     		ldr	r0, .L50
+ARM GAS  /tmp/ccgMorOM.s 			page 20
+
+
+ 588              	.LVL32:
+ 589              		.loc 1 373 5 view .LVU165
+ 590 0008 FFF7FEFF 		bl	HAL_UART_Transmit_IT
+ 591              	.LVL33:
+ 374:Src/interfaces/interfaces.c **** }
+ 592              		.loc 1 374 1 view .LVU166
+ 593              		@ sp needed
+ 594 000c 10BD     		pop	{r4, pc}
+ 595              	.L51:
+ 596 000e C046     		.align	2
+ 597              	.L50:
+ 598 0010 00000000 		.word	huart4
+ 599              		.cfi_endproc
+ 600              	.LFE40:
+ 602              		.text
+ 603              	.Letext0:
+ 604              		.file 2 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/machine/_default_types.h"
+ 605              		.file 3 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/sys/_stdint.h"
+ 606              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 607              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f091xc.h"
+ 608              		.file 6 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/sys/lock.h"
+ 609              		.file 7 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/sys/_types.h"
+ 610              		.file 8 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 611              		.file 9 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/sys/reent.h"
+ 612              		.file 10 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_def.h"
+ 613              		.file 11 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_dma.h"
+ 614              		.file 12 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h"
+ 615              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 616              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 617              		.file 15 "Src/interfaces/../defines.h"
+ 618              		.file 16 "Inc/../Src/interfaces/uartGPS.h"
+ 619              		.file 17 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_gpio.h"
+ARM GAS  /tmp/ccgMorOM.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 interfaces.c
+     /tmp/ccgMorOM.s:16     .text.HAL_UART_RxCpltCallback:0000000000000000 $t
+     /tmp/ccgMorOM.s:25     .text.HAL_UART_RxCpltCallback:0000000000000000 HAL_UART_RxCpltCallback
+     /tmp/ccgMorOM.s:408    .text.HAL_UART_RxCpltCallback:00000000000001ac $d
+     /tmp/ccgMorOM.s:421    .text.Interfaces_SelectUartUARTGPSData:0000000000000000 $t
+     /tmp/ccgMorOM.s:429    .text.Interfaces_SelectUartUARTGPSData:0000000000000000 Interfaces_SelectUartUARTGPSData
+     /tmp/ccgMorOM.s:493    .text.Interfaces_SelectUartUARTGPSData:000000000000002c $d
+     /tmp/ccgMorOM.s:501    .text.InterfacesSendDataGPS:0000000000000000 $t
+     /tmp/ccgMorOM.s:509    .text.InterfacesSendDataGPS:0000000000000000 InterfacesSendDataGPS
+     /tmp/ccgMorOM.s:554    .text.InterfacesSendDataGPS:000000000000001c $d
+     /tmp/ccgMorOM.s:559    .text.InterfacesSendDataCli:0000000000000000 $t
+     /tmp/ccgMorOM.s:567    .text.InterfacesSendDataCli:0000000000000000 InterfacesSendDataCli
+     /tmp/ccgMorOM.s:598    .text.InterfacesSendDataCli:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Receive_IT
+uartGPS_ResetUARTGPSData
+HAL_GPIO_TogglePin
+HAL_UART_Transmit_IT
+vTaskResume
+UARTGPSData
+huart4
+RxUARTGPSStates
+tempData
+UARTGPSPacketFlags
+GPSTaskHandle
+huart6
+huart2

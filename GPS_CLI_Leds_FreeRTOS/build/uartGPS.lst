@@ -1,0 +1,575 @@
+ARM GAS  /tmp/cc9JkZRB.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"uartGPS.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.uartGPS_init,"ax",%progbits
+  16              		.align	1
+  17              		.p2align 2,,3
+  18              		.global	uartGPS_init
+  19              		.arch armv6s-m
+  20              		.syntax unified
+  21              		.code	16
+  22              		.thumb_func
+  23              		.fpu softvfp
+  25              	uartGPS_init:
+  26              	.LVL0:
+  27              	.LFB37:
+  28              		.file 1 "Src/interfaces/uartGPS.c"
+   1:Src/interfaces/uartGPS.c **** /*******************************************************************************
+   2:Src/interfaces/uartGPS.c **** * Filename: .c
+   3:Src/interfaces/uartGPS.c **** * Developer(s): Jorge Rios
+   4:Src/interfaces/uartGPS.c **** * Language: ANSI C
+   5:Src/interfaces/uartGPS.c **** * Abstract: 
+   6:Src/interfaces/uartGPS.c **** * ------------------------------------------------------------------------------
+   7:Src/interfaces/uartGPS.c **** * Copyright (c) 2009, Investigacion y Tecnologia S.A.
+   8:Src/interfaces/uartGPS.c **** * Investigacion y Tecnologia S.A.
+   9:Src/interfaces/uartGPS.c **** * Carrera 19  82 - 38
+  10:Src/interfaces/uartGPS.c **** * Bogota.
+  11:Src/interfaces/uartGPS.c **** * Colombia.
+  12:Src/interfaces/uartGPS.c **** *
+  13:Src/interfaces/uartGPS.c **** * http: www.invytec.com
+  14:Src/interfaces/uartGPS.c **** * mail: hardware@invytec.com
+  15:Src/interfaces/uartGPS.c **** *
+  16:Src/interfaces/uartGPS.c **** * All rights reserved.
+  17:Src/interfaces/uartGPS.c **** * ------------------------------------------------------------------------------
+  18:Src/interfaces/uartGPS.c **** * Notes:
+  19:Src/interfaces/uartGPS.c **** *
+  20:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  21:Src/interfaces/uartGPS.c **** 
+  22:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  23:Src/interfaces/uartGPS.c **** * HEADER FILES
+  24:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  25:Src/interfaces/uartGPS.c **** /* ansi c */
+  26:Src/interfaces/uartGPS.c **** 
+  27:Src/interfaces/uartGPS.c **** /* propietary */
+  28:Src/interfaces/uartGPS.c **** #include "uartGPS.h"
+  29:Src/interfaces/uartGPS.c **** #include "interfaces.h"
+  30:Src/interfaces/uartGPS.c **** #include "../libs/GPS.h"
+ARM GAS  /tmp/cc9JkZRB.s 			page 2
+
+
+  31:Src/interfaces/uartGPS.c **** 
+  32:Src/interfaces/uartGPS.c **** 
+  33:Src/interfaces/uartGPS.c **** 
+  34:Src/interfaces/uartGPS.c **** /* operation system */
+  35:Src/interfaces/uartGPS.c **** 
+  36:Src/interfaces/uartGPS.c **** 
+  37:Src/interfaces/uartGPS.c **** 
+  38:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  39:Src/interfaces/uartGPS.c **** * LOCAL CONSTANT DECLARATION
+  40:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  41:Src/interfaces/uartGPS.c **** 
+  42:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  43:Src/interfaces/uartGPS.c **** * LOCAL MACRO DECLARATION
+  44:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  45:Src/interfaces/uartGPS.c **** 
+  46:Src/interfaces/uartGPS.c **** 
+  47:Src/interfaces/uartGPS.c **** 
+  48:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  49:Src/interfaces/uartGPS.c **** * LOCAL NEW DATA TYPES
+  50:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  51:Src/interfaces/uartGPS.c **** 
+  52:Src/interfaces/uartGPS.c **** /**
+  53:Src/interfaces/uartGPS.c **** @name  	    data type Name 
+  54:Src/interfaces/uartGPS.c **** @brief	    Description
+  55:Src/interfaces/uartGPS.c **** */
+  56:Src/interfaces/uartGPS.c **** 
+  57:Src/interfaces/uartGPS.c ****            
+  58:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  59:Src/interfaces/uartGPS.c **** * LOCAL DATA DECLARATION
+  60:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  61:Src/interfaces/uartGPS.c **** 
+  62:Src/interfaces/uartGPS.c **** 
+  63:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  64:Src/interfaces/uartGPS.c **** * Global Data Declaration
+  65:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  66:Src/interfaces/uartGPS.c **** 
+  67:Src/interfaces/uartGPS.c **** //Variable Maquina de estados para recepcion de tramas NMEA
+  68:Src/interfaces/uartGPS.c **** volatile eNMEAProtocolRxMachineStates RxUARTGPSStates;
+  69:Src/interfaces/uartGPS.c **** //Variable Estructura para controlar recepcion de datos NMEA
+  70:Src/interfaces/uartGPS.c **** volatile sUARTGPSData UARTGPSData;
+  71:Src/interfaces/uartGPS.c **** // Flags para control de funciones de la UART GPS flags
+  72:Src/interfaces/uartGPS.c **** volatile union byte_def UARTGPSPacketFlags;
+  73:Src/interfaces/uartGPS.c **** 
+  74:Src/interfaces/uartGPS.c **** 
+  75:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  76:Src/interfaces/uartGPS.c **** * GLOBAL FUNCTION DECLARATION
+  77:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  78:Src/interfaces/uartGPS.c **** 
+  79:Src/interfaces/uartGPS.c **** 
+  80:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  81:Src/interfaces/uartGPS.c **** * LOCAL FUNCTIONS DECLARATIONS
+  82:Src/interfaces/uartGPS.c **** *******************************************************************************/
+  83:Src/interfaces/uartGPS.c **** 
+  84:Src/interfaces/uartGPS.c **** 
+  85:Src/interfaces/uartGPS.c **** /*******************************************************************************
+  86:Src/interfaces/uartGPS.c **** * LOCAL FUNCTIONS DEFINITIONS
+  87:Src/interfaces/uartGPS.c **** *******************************************************************************/
+ARM GAS  /tmp/cc9JkZRB.s 			page 3
+
+
+  88:Src/interfaces/uartGPS.c **** 
+  89:Src/interfaces/uartGPS.c **** 
+  90:Src/interfaces/uartGPS.c **** /**********************************************************************************
+  91:Src/interfaces/uartGPS.c **** Name:          	
+  92:Src/interfaces/uartGPS.c **** Description:    
+  93:Src/interfaces/uartGPS.c **** Parameters:     
+  94:Src/interfaces/uartGPS.c **** Returns:        
+  95:Src/interfaces/uartGPS.c **** **********************************************************************************/
+  96:Src/interfaces/uartGPS.c **** void uartGPS_init(eUartPorts uport)
+  97:Src/interfaces/uartGPS.c **** {
+  29              		.loc 1 97 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  98:Src/interfaces/uartGPS.c ****     UARTGPSData.InstanceUartPort = Interfaces_SelectUartUARTGPSData(&uport);
+  33              		.loc 1 98 5 view .LVU1
+  97:Src/interfaces/uartGPS.c ****     UARTGPSData.InstanceUartPort = Interfaces_SelectUartUARTGPSData(&uport);
+  34              		.loc 1 97 1 is_stmt 0 view .LVU2
+  35 0000 00B5     		push	{lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 4
+  38              		.cfi_offset 14, -4
+  39 0002 83B0     		sub	sp, sp, #12
+  40              	.LCFI1:
+  41              		.cfi_def_cfa_offset 16
+  97:Src/interfaces/uartGPS.c ****     UARTGPSData.InstanceUartPort = Interfaces_SelectUartUARTGPSData(&uport);
+  42              		.loc 1 97 1 view .LVU3
+  43 0004 6B46     		mov	r3, sp
+  44 0006 D871     		strb	r0, [r3, #7]
+  45 0008 0733     		adds	r3, r3, #7
+  46              		.loc 1 98 36 view .LVU4
+  47 000a 1800     		movs	r0, r3
+  48              	.LVL1:
+  49              		.loc 1 98 36 view .LVU5
+  50 000c FFF7FEFF 		bl	Interfaces_SelectUartUARTGPSData
+  51              	.LVL2:
+  52              		.loc 1 98 34 view .LVU6
+  53 0010 EF23     		movs	r3, #239
+  54 0012 024A     		ldr	r2, .L3
+  55 0014 9B00     		lsls	r3, r3, #2
+  56 0016 D050     		str	r0, [r2, r3]
+  99:Src/interfaces/uartGPS.c **** }
+  57              		.loc 1 99 1 view .LVU7
+  58 0018 03B0     		add	sp, sp, #12
+  59              		@ sp needed
+  60 001a 00BD     		pop	{pc}
+  61              	.L4:
+  62              		.align	2
+  63              	.L3:
+  64 001c 00000000 		.word	UARTGPSData
+  65              		.cfi_endproc
+  66              	.LFE37:
+  68              		.section	.text.uartGPS_ResetUARTGPSData,"ax",%progbits
+  69              		.align	1
+  70              		.p2align 2,,3
+  71              		.global	uartGPS_ResetUARTGPSData
+  72              		.syntax unified
+ARM GAS  /tmp/cc9JkZRB.s 			page 4
+
+
+  73              		.code	16
+  74              		.thumb_func
+  75              		.fpu softvfp
+  77              	uartGPS_ResetUARTGPSData:
+  78              	.LVL3:
+  79              	.LFB38:
+ 100:Src/interfaces/uartGPS.c **** /***********************************************************************************
+ 101:Src/interfaces/uartGPS.c **** End of function 
+ 102:Src/interfaces/uartGPS.c **** ***********************************************************************************/
+ 103:Src/interfaces/uartGPS.c **** 
+ 104:Src/interfaces/uartGPS.c **** 
+ 105:Src/interfaces/uartGPS.c **** 
+ 106:Src/interfaces/uartGPS.c **** /**********************************************************************************
+ 107:Src/interfaces/uartGPS.c **** Name:           uartGPS_ResetUARTGPSData
+ 108:Src/interfaces/uartGPS.c **** Description:    It sends protocol data by UART interface
+ 109:Src/interfaces/uartGPS.c **** Parameters:     String to send, Uart number interface
+ 110:Src/interfaces/uartGPS.c **** Returns:        none
+ 111:Src/interfaces/uartGPS.c **** **********************************************************************************/
+ 112:Src/interfaces/uartGPS.c **** void uartGPS_ResetUARTGPSData(eNMEAProtocolRxMachineStates state)
+ 113:Src/interfaces/uartGPS.c **** {
+  80              		.loc 1 113 1 is_stmt 1 view -0
+  81              		.cfi_startproc
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+ 114:Src/interfaces/uartGPS.c **** #define RX_BUFFER_SIZE             SIZE_BUFF_UART_GPS_RX
+ 115:Src/interfaces/uartGPS.c **** #define RX_FRAME_INDEX             UARTGPSData.u8RxFrameIndex
+ 116:Src/interfaces/uartGPS.c **** #define RX_FRAME_PROCESSED_INDEX   UARTGPSData.u8RxFrameProcessedIndex
+ 117:Src/interfaces/uartGPS.c **** #define RX_END_ARRAY               UARTGPSData.u16RxEndsFrameArray[RX_FRAME_INDEX]
+ 118:Src/interfaces/uartGPS.c **** #define RX_END_ARRAY_POS(i)        UARTGPSData.u16RxEndsFrameArray[i]
+ 119:Src/interfaces/uartGPS.c **** #define RX_HEADER_ARRAY            UARTGPSData.u16RxHeadersFrameArray[RX_FRAME_INDEX]
+ 120:Src/interfaces/uartGPS.c **** #define RX_HEADER_ARRAY_POS(i)     UARTGPSData.u16RxHeadersFrameArray[i]
+ 121:Src/interfaces/uartGPS.c **** #define RX_BUFFER_INDEX            UARTGPSData.u16RxBufferIndex
+ 122:Src/interfaces/uartGPS.c **** #define RX_BUFFER_PROCESSED_INDEX  UARTGPSData.u16RxBufferProcessedIndex
+ 123:Src/interfaces/uartGPS.c **** #define RX_BUFFER                  UARTGPSData.cDataUARTGPSRx[RX_BUFFER_INDEX]
+ 124:Src/interfaces/uartGPS.c **** #define RX_BUFFER_POS(i)           UARTGPSData.cDataUARTGPSRx[i]  
+ 125:Src/interfaces/uartGPS.c ****     
+ 126:Src/interfaces/uartGPS.c ****     // overflow del buffer    
+ 127:Src/interfaces/uartGPS.c ****     //initial state
+ 128:Src/interfaces/uartGPS.c ****     RxUARTGPSStates = state;
+  84              		.loc 1 128 5 view .LVU9
+  85              		.loc 1 128 21 is_stmt 0 view .LVU10
+  86 0000 1A4B     		ldr	r3, .L10
+ 129:Src/interfaces/uartGPS.c ****     //Reset Frame Index
+ 130:Src/interfaces/uartGPS.c ****     RX_FRAME_INDEX = 0;
+ 131:Src/interfaces/uartGPS.c ****     //Reset Rx Buffer index
+ 132:Src/interfaces/uartGPS.c ****     RX_BUFFER_INDEX = 0;
+  87              		.loc 1 132 21 view .LVU11
+  88 0002 C122     		movs	r2, #193
+ 113:Src/interfaces/uartGPS.c **** #define RX_BUFFER_SIZE             SIZE_BUFF_UART_GPS_RX
+  89              		.loc 1 113 1 view .LVU12
+  90 0004 10B5     		push	{r4, lr}
+  91              	.LCFI2:
+  92              		.cfi_def_cfa_offset 8
+  93              		.cfi_offset 4, -8
+  94              		.cfi_offset 14, -4
+ 128:Src/interfaces/uartGPS.c ****     //Reset Frame Index
+  95              		.loc 1 128 21 view .LVU13
+ARM GAS  /tmp/cc9JkZRB.s 			page 5
+
+
+  96 0006 1870     		strb	r0, [r3]
+ 130:Src/interfaces/uartGPS.c ****     //Reset Rx Buffer index
+  97              		.loc 1 130 5 is_stmt 1 view .LVU14
+ 130:Src/interfaces/uartGPS.c ****     //Reset Rx Buffer index
+  98              		.loc 1 130 20 is_stmt 0 view .LVU15
+  99 0008 0023     		movs	r3, #0
+ 100 000a 1949     		ldr	r1, .L10+4
+ 101              		.loc 1 132 21 view .LVU16
+ 102 000c 9200     		lsls	r2, r2, #2
+ 130:Src/interfaces/uartGPS.c ****     //Reset Rx Buffer index
+ 103              		.loc 1 130 20 view .LVU17
+ 104 000e 8B70     		strb	r3, [r1, #2]
+ 105              		.loc 1 132 5 is_stmt 1 view .LVU18
+ 106              		.loc 1 132 21 is_stmt 0 view .LVU19
+ 107 0010 8B52     		strh	r3, [r1, r2]
+ 133:Src/interfaces/uartGPS.c ****     //Reset Frame Processed Index
+ 134:Src/interfaces/uartGPS.c ****     RX_FRAME_PROCESSED_INDEX = 0;
+ 108              		.loc 1 134 5 is_stmt 1 view .LVU20
+ 109              		.loc 1 134 30 is_stmt 0 view .LVU21
+ 110 0012 0022     		movs	r2, #0
+ 111 0014 CA70     		strb	r2, [r1, #3]
+ 135:Src/interfaces/uartGPS.c ****     //Reset Buffer Processed Index
+ 136:Src/interfaces/uartGPS.c ****     RX_BUFFER_PROCESSED_INDEX = 0;
+ 112              		.loc 1 136 5 is_stmt 1 view .LVU22
+ 113              		.loc 1 136 31 is_stmt 0 view .LVU23
+ 114 0016 174A     		ldr	r2, .L10+8
+ 115              	.LBB2:
+ 137:Src/interfaces/uartGPS.c ****     
+ 138:Src/interfaces/uartGPS.c ****     //Reset Rx Header Array
+ 139:Src/interfaces/uartGPS.c ****     for (int i=0; i<SIZE_BUFF_HEADERS; i++)
+ 140:Src/interfaces/uartGPS.c ****     {
+ 141:Src/interfaces/uartGPS.c ****         RX_HEADER_ARRAY_POS(i) = 0;
+ 116              		.loc 1 141 32 view .LVU24
+ 117 0018 0020     		movs	r0, #0
+ 118              	.LVL4:
+ 119              		.loc 1 141 32 view .LVU25
+ 120              	.LBE2:
+ 136:Src/interfaces/uartGPS.c ****     
+ 121              		.loc 1 136 31 view .LVU26
+ 122 001a 8B52     		strh	r3, [r1, r2]
+ 139:Src/interfaces/uartGPS.c ****     {
+ 123              		.loc 1 139 5 is_stmt 1 view .LVU27
+ 124              	.LBB3:
+ 139:Src/interfaces/uartGPS.c ****     {
+ 125              		.loc 1 139 10 view .LVU28
+ 126              	.LVL5:
+ 139:Src/interfaces/uartGPS.c ****     {
+ 127              		.loc 1 139 14 is_stmt 0 view .LVU29
+ 128 001c 0022     		movs	r2, #0
+ 129              	.LVL6:
+ 130              	.L6:
+ 131              		.loc 1 141 9 is_stmt 1 discriminator 3 view .LVU30
+ 132              		.loc 1 141 32 is_stmt 0 discriminator 3 view .LVU31
+ 133 001e 1300     		movs	r3, r2
+ 134 0020 B133     		adds	r3, r3, #177
+ 135 0022 FF33     		adds	r3, r3, #255
+ 136 0024 5B00     		lsls	r3, r3, #1
+ARM GAS  /tmp/cc9JkZRB.s 			page 6
+
+
+ 137 0026 CB18     		adds	r3, r1, r3
+ 138 0028 5880     		strh	r0, [r3, #2]
+ 142:Src/interfaces/uartGPS.c ****         RX_END_ARRAY_POS(i) = 0;
+ 139              		.loc 1 142 9 is_stmt 1 discriminator 3 view .LVU32
+ 140              		.loc 1 142 29 is_stmt 0 discriminator 3 view .LVU33
+ 141 002a 1300     		movs	r3, r2
+ 142 002c 8533     		adds	r3, r3, #133
+ 143 002e FF33     		adds	r3, r3, #255
+ 144 0030 5B00     		lsls	r3, r3, #1
+ 139:Src/interfaces/uartGPS.c ****     {
+ 145              		.loc 1 139 41 discriminator 3 view .LVU34
+ 146 0032 0132     		adds	r2, r2, #1
+ 147              	.LVL7:
+ 148              		.loc 1 142 29 discriminator 3 view .LVU35
+ 149 0034 C852     		strh	r0, [r1, r3]
+ 139:Src/interfaces/uartGPS.c ****     {
+ 150              		.loc 1 139 5 discriminator 3 view .LVU36
+ 151 0036 2D2A     		cmp	r2, #45
+ 152 0038 F1D1     		bne	.L6
+ 153              	.LBE3:
+ 154              	.LBB4:
+ 143:Src/interfaces/uartGPS.c ****     }
+ 144:Src/interfaces/uartGPS.c ****     
+ 145:Src/interfaces/uartGPS.c ****     for ( int i= 0; i<RX_BUFFER_SIZE; i++)
+ 155              		.loc 1 145 5 view .LVU37
+ 156 003a 8024     		movs	r4, #128
+ 157              		.loc 1 145 15 view .LVU38
+ 158 003c 0023     		movs	r3, #0
+ 146:Src/interfaces/uartGPS.c ****     {
+ 147:Src/interfaces/uartGPS.c ****         RX_BUFFER_POS(i) = 0x00;
+ 159              		.loc 1 147 26 view .LVU39
+ 160 003e 0020     		movs	r0, #0
+ 145:Src/interfaces/uartGPS.c ****     {
+ 161              		.loc 1 145 5 view .LVU40
+ 162 0040 A400     		lsls	r4, r4, #2
+ 163              	.LVL8:
+ 164              	.L7:
+ 165              		.loc 1 147 9 is_stmt 1 discriminator 3 view .LVU41
+ 166              		.loc 1 147 26 is_stmt 0 discriminator 3 view .LVU42
+ 167 0042 CA18     		adds	r2, r1, r3
+ 145:Src/interfaces/uartGPS.c ****     {
+ 168              		.loc 1 145 40 discriminator 3 view .LVU43
+ 169 0044 0133     		adds	r3, r3, #1
+ 170              	.LVL9:
+ 171              		.loc 1 147 26 discriminator 3 view .LVU44
+ 172 0046 1071     		strb	r0, [r2, #4]
+ 145:Src/interfaces/uartGPS.c ****     {
+ 173              		.loc 1 145 5 discriminator 3 view .LVU45
+ 174 0048 A342     		cmp	r3, r4
+ 175 004a FAD1     		bne	.L7
+ 176              	.LBE4:
+ 148:Src/interfaces/uartGPS.c ****     }
+ 149:Src/interfaces/uartGPS.c ****     UARTGPSPacketRxError = true;
+ 177              		.loc 1 149 5 is_stmt 1 view .LVU46
+ 178              		.loc 1 149 26 is_stmt 0 view .LVU47
+ 179 004c 0121     		movs	r1, #1
+ 180 004e 0A4B     		ldr	r3, .L10+12
+ARM GAS  /tmp/cc9JkZRB.s 			page 7
+
+
+ 181              	.LVL10:
+ 150:Src/interfaces/uartGPS.c ****     UARTGPSCommandRx = false;
+ 151:Src/interfaces/uartGPS.c ****     UARTGPSReceivingData = false;
+ 152:Src/interfaces/uartGPS.c ****     
+ 153:Src/interfaces/uartGPS.c ****     GPSData.bValidFrame = false;
+ 154:Src/interfaces/uartGPS.c ****     
+ 155:Src/interfaces/uartGPS.c **** 
+ 156:Src/interfaces/uartGPS.c **** #undef RX_BUFFER_SIZE 
+ 157:Src/interfaces/uartGPS.c **** #undef RX_FRAME_INDEX 
+ 158:Src/interfaces/uartGPS.c **** #undef RX_FRAME_PROCESSED_INDEX
+ 159:Src/interfaces/uartGPS.c **** #undef RX_END_ARRAY
+ 160:Src/interfaces/uartGPS.c **** #undef RX_END_ARRAY_POS
+ 161:Src/interfaces/uartGPS.c **** #undef RX_HEADER_ARRAY
+ 162:Src/interfaces/uartGPS.c **** #undef RX_HEADER_ARRAY_POS
+ 163:Src/interfaces/uartGPS.c **** #undef RX_BUFFER_INDEX
+ 164:Src/interfaces/uartGPS.c **** #undef RX_BUFFER_PROCESSED_INDEX
+ 165:Src/interfaces/uartGPS.c **** #undef RX_BUFFER
+ 166:Src/interfaces/uartGPS.c **** #undef RX_BUFFER_POS
+ 167:Src/interfaces/uartGPS.c **** }
+ 182              		.loc 1 167 1 view .LVU48
+ 183              		@ sp needed
+ 149:Src/interfaces/uartGPS.c ****     UARTGPSCommandRx = false;
+ 184              		.loc 1 149 26 view .LVU49
+ 185 0050 1A78     		ldrb	r2, [r3]
+ 186 0052 0A43     		orrs	r2, r1
+ 150:Src/interfaces/uartGPS.c ****     UARTGPSCommandRx = false;
+ 187              		.loc 1 150 22 view .LVU50
+ 188 0054 0221     		movs	r1, #2
+ 149:Src/interfaces/uartGPS.c ****     UARTGPSCommandRx = false;
+ 189              		.loc 1 149 26 view .LVU51
+ 190 0056 1A70     		strb	r2, [r3]
+ 150:Src/interfaces/uartGPS.c ****     UARTGPSCommandRx = false;
+ 191              		.loc 1 150 5 is_stmt 1 view .LVU52
+ 150:Src/interfaces/uartGPS.c ****     UARTGPSCommandRx = false;
+ 192              		.loc 1 150 22 is_stmt 0 view .LVU53
+ 193 0058 1A78     		ldrb	r2, [r3]
+ 194 005a 8A43     		bics	r2, r1
+ 195 005c 1A70     		strb	r2, [r3]
+ 151:Src/interfaces/uartGPS.c ****     
+ 196              		.loc 1 151 5 is_stmt 1 view .LVU54
+ 151:Src/interfaces/uartGPS.c ****     
+ 197              		.loc 1 151 26 is_stmt 0 view .LVU55
+ 198 005e 1A78     		ldrb	r2, [r3]
+ 199 0060 0631     		adds	r1, r1, #6
+ 200 0062 8A43     		bics	r2, r1
+ 201 0064 1A70     		strb	r2, [r3]
+ 153:Src/interfaces/uartGPS.c ****     
+ 202              		.loc 1 153 5 is_stmt 1 view .LVU56
+ 153:Src/interfaces/uartGPS.c ****     
+ 203              		.loc 1 153 25 is_stmt 0 view .LVU57
+ 204 0066 054B     		ldr	r3, .L10+16
+ 205 0068 1870     		strb	r0, [r3]
+ 206              		.loc 1 167 1 view .LVU58
+ 207 006a 10BD     		pop	{r4, pc}
+ 208              	.L11:
+ 209              		.align	2
+ 210              	.L10:
+ARM GAS  /tmp/cc9JkZRB.s 			page 8
+
+
+ 211 006c 00000000 		.word	RxUARTGPSStates
+ 212 0070 00000000 		.word	UARTGPSData
+ 213 0074 06030000 		.word	774
+ 214 0078 00000000 		.word	UARTGPSPacketFlags
+ 215 007c 00000000 		.word	GPSData
+ 216              		.cfi_endproc
+ 217              	.LFE38:
+ 219              		.section	.text.uartGPS_SelectUartUARTGPSData,"ax",%progbits
+ 220              		.align	1
+ 221              		.p2align 2,,3
+ 222              		.global	uartGPS_SelectUartUARTGPSData
+ 223              		.syntax unified
+ 224              		.code	16
+ 225              		.thumb_func
+ 226              		.fpu softvfp
+ 228              	uartGPS_SelectUartUARTGPSData:
+ 229              	.LFB42:
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 8
+ 232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 233 0000 00B5     		push	{lr}
+ 234              	.LCFI3:
+ 235              		.cfi_def_cfa_offset 4
+ 236              		.cfi_offset 14, -4
+ 237 0002 83B0     		sub	sp, sp, #12
+ 238              	.LCFI4:
+ 239              		.cfi_def_cfa_offset 16
+ 240 0004 6B46     		mov	r3, sp
+ 241 0006 D871     		strb	r0, [r3, #7]
+ 242 0008 0733     		adds	r3, r3, #7
+ 243 000a 1800     		movs	r0, r3
+ 244 000c FFF7FEFF 		bl	Interfaces_SelectUartUARTGPSData
+ 245 0010 EF23     		movs	r3, #239
+ 246 0012 024A     		ldr	r2, .L13
+ 247 0014 9B00     		lsls	r3, r3, #2
+ 248 0016 D050     		str	r0, [r2, r3]
+ 249 0018 03B0     		add	sp, sp, #12
+ 250              		@ sp needed
+ 251 001a 00BD     		pop	{pc}
+ 252              	.L14:
+ 253              		.align	2
+ 254              	.L13:
+ 255 001c 00000000 		.word	UARTGPSData
+ 256              		.cfi_endproc
+ 257              	.LFE42:
+ 259              		.section	.text.uartGPS_SendDataGPS,"ax",%progbits
+ 260              		.align	1
+ 261              		.p2align 2,,3
+ 262              		.global	uartGPS_SendDataGPS
+ 263              		.syntax unified
+ 264              		.code	16
+ 265              		.thumb_func
+ 266              		.fpu softvfp
+ 268              	uartGPS_SendDataGPS:
+ 269              	.LVL11:
+ 270              	.LFB40:
+ 168:Src/interfaces/uartGPS.c **** /***********************************************************************************
+ARM GAS  /tmp/cc9JkZRB.s 			page 9
+
+
+ 169:Src/interfaces/uartGPS.c **** End of function uartGPS_ResetUARTGPSData
+ 170:Src/interfaces/uartGPS.c **** ***********************************************************************************/
+ 171:Src/interfaces/uartGPS.c **** 
+ 172:Src/interfaces/uartGPS.c **** 
+ 173:Src/interfaces/uartGPS.c ****  /**********************************************************************************
+ 174:Src/interfaces/uartGPS.c **** Name:          	uartGPS_ChangeUartUARTGPSData
+ 175:Src/interfaces/uartGPS.c **** Description:    allow changes GPS  uart port
+ 176:Src/interfaces/uartGPS.c **** Parameters:     Port
+ 177:Src/interfaces/uartGPS.c **** Returns:        none
+ 178:Src/interfaces/uartGPS.c **** **********************************************************************************/
+ 179:Src/interfaces/uartGPS.c **** void uartGPS_SelectUartUARTGPSData(eUartPorts port)
+ 180:Src/interfaces/uartGPS.c **** {
+ 181:Src/interfaces/uartGPS.c ****      UARTGPSData.InstanceUartPort = Interfaces_SelectUartUARTGPSData(&port);
+ 182:Src/interfaces/uartGPS.c **** }
+ 183:Src/interfaces/uartGPS.c **** /***********************************************************************************
+ 184:Src/interfaces/uartGPS.c **** End of function uartGPS_ChangeUartUARTGPSData
+ 185:Src/interfaces/uartGPS.c **** ***********************************************************************************/
+ 186:Src/interfaces/uartGPS.c **** 
+ 187:Src/interfaces/uartGPS.c **** 
+ 188:Src/interfaces/uartGPS.c **** /**********************************************************************************
+ 189:Src/interfaces/uartGPS.c **** Name:          	
+ 190:Src/interfaces/uartGPS.c **** Description:    
+ 191:Src/interfaces/uartGPS.c **** Parameters:     
+ 192:Src/interfaces/uartGPS.c **** Returns:        
+ 193:Src/interfaces/uartGPS.c **** **********************************************************************************/
+ 194:Src/interfaces/uartGPS.c **** void uartGPS_SendDataGPS( uint8 *data, uint16 bytes)
+ 195:Src/interfaces/uartGPS.c **** {
+ 271              		.loc 1 195 1 is_stmt 1 view -0
+ 272              		.cfi_startproc
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 196:Src/interfaces/uartGPS.c ****     InterfacesSendDataGPS(data, bytes);
+ 275              		.loc 1 196 5 view .LVU60
+ 195:Src/interfaces/uartGPS.c ****     InterfacesSendDataGPS(data, bytes);
+ 276              		.loc 1 195 1 is_stmt 0 view .LVU61
+ 277 0000 10B5     		push	{r4, lr}
+ 278              	.LCFI5:
+ 279              		.cfi_def_cfa_offset 8
+ 280              		.cfi_offset 4, -8
+ 281              		.cfi_offset 14, -4
+ 282              		.loc 1 196 5 view .LVU62
+ 283 0002 FFF7FEFF 		bl	InterfacesSendDataGPS
+ 284              	.LVL12:
+ 197:Src/interfaces/uartGPS.c **** }
+ 285              		.loc 1 197 1 view .LVU63
+ 286              		@ sp needed
+ 287 0006 10BD     		pop	{r4, pc}
+ 288              		.cfi_endproc
+ 289              	.LFE40:
+ 291              		.comm	UARTGPSPacketFlags,1,4
+ 292              		.comm	UARTGPSData,960,4
+ 293              		.comm	RxUARTGPSStates,1,1
+ 294              		.text
+ 295              	.Letext0:
+ 296              		.file 2 "Src/interfaces/../defines.h"
+ 297              		.file 3 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/machine/_default_types.h"
+ 298              		.file 4 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  /tmp/cc9JkZRB.s 			page 10
+
+
+ 299              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 300              		.file 6 "Src/interfaces/uartGPS.h"
+ 301              		.file 7 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/sys/lock.h"
+ 302              		.file 8 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/sys/_types.h"
+ 303              		.file 9 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 304              		.file 10 "/usr/lib/gcc/arm-none-eabi/8.2018.q4/arm-none-eabi/include/sys/reent.h"
+ 305              		.file 11 "Src/interfaces/../libs/GPS.h"
+ 306              		.file 12 "Src/interfaces/interfaces.h"
+ARM GAS  /tmp/cc9JkZRB.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 uartGPS.c
+     /tmp/cc9JkZRB.s:16     .text.uartGPS_init:0000000000000000 $t
+     /tmp/cc9JkZRB.s:25     .text.uartGPS_init:0000000000000000 uartGPS_init
+     /tmp/cc9JkZRB.s:64     .text.uartGPS_init:000000000000001c $d
+                            *COM*:00000000000003c0 UARTGPSData
+     /tmp/cc9JkZRB.s:69     .text.uartGPS_ResetUARTGPSData:0000000000000000 $t
+     /tmp/cc9JkZRB.s:77     .text.uartGPS_ResetUARTGPSData:0000000000000000 uartGPS_ResetUARTGPSData
+     /tmp/cc9JkZRB.s:211    .text.uartGPS_ResetUARTGPSData:000000000000006c $d
+                            *COM*:0000000000000001 RxUARTGPSStates
+                            *COM*:0000000000000001 UARTGPSPacketFlags
+     /tmp/cc9JkZRB.s:220    .text.uartGPS_SelectUartUARTGPSData:0000000000000000 $t
+     /tmp/cc9JkZRB.s:228    .text.uartGPS_SelectUartUARTGPSData:0000000000000000 uartGPS_SelectUartUARTGPSData
+     /tmp/cc9JkZRB.s:255    .text.uartGPS_SelectUartUARTGPSData:000000000000001c $d
+     /tmp/cc9JkZRB.s:260    .text.uartGPS_SendDataGPS:0000000000000000 $t
+     /tmp/cc9JkZRB.s:268    .text.uartGPS_SendDataGPS:0000000000000000 uartGPS_SendDataGPS
+
+UNDEFINED SYMBOLS
+Interfaces_SelectUartUARTGPSData
+GPSData
+InterfacesSendDataGPS

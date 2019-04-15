@@ -1,0 +1,170 @@
+ARM GAS  /tmp/ccv76TjM.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"MiscFunctions.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.MiscFunctions_DecodASCIIDecimalToHexa,"ax",%progbits
+  16              		.align	1
+  17              		.p2align 2,,3
+  18              		.global	MiscFunctions_DecodASCIIDecimalToHexa
+  19              		.arch armv6s-m
+  20              		.syntax unified
+  21              		.code	16
+  22              		.thumb_func
+  23              		.fpu softvfp
+  25              	MiscFunctions_DecodASCIIDecimalToHexa:
+  26              	.LVL0:
+  27              	.LFB0:
+  28              		.file 1 "Src/libs/MiscFunctions.c"
+   1:Src/libs/MiscFunctions.c **** /*******************************************************************************
+   2:Src/libs/MiscFunctions.c **** * Filename: MiscFunctions.c
+   3:Src/libs/MiscFunctions.c **** * Developer(s): Jorge Rios
+   4:Src/libs/MiscFunctions.c **** * Language: ANSI C
+   5:Src/libs/MiscFunctions.c **** * Abstract: 
+   6:Src/libs/MiscFunctions.c **** * ------------------------------------------------------------------------------
+   7:Src/libs/MiscFunctions.c **** * Copyright (c) 2009, Investigacion y Tecnologia S.A.
+   8:Src/libs/MiscFunctions.c **** * Investigacion y Tecnologia S.A.
+   9:Src/libs/MiscFunctions.c **** * Carrera 19  82 - 38
+  10:Src/libs/MiscFunctions.c **** * Bogota.
+  11:Src/libs/MiscFunctions.c **** * Colombia.
+  12:Src/libs/MiscFunctions.c **** *
+  13:Src/libs/MiscFunctions.c **** * http: www.invytec.com
+  14:Src/libs/MiscFunctions.c **** * mail: hardware@invytec.com
+  15:Src/libs/MiscFunctions.c **** *
+  16:Src/libs/MiscFunctions.c **** * All rights reserved.
+  17:Src/libs/MiscFunctions.c **** * ------------------------------------------------------------------------------
+  18:Src/libs/MiscFunctions.c **** * Notes:
+  19:Src/libs/MiscFunctions.c **** *
+  20:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  21:Src/libs/MiscFunctions.c **** 
+  22:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  23:Src/libs/MiscFunctions.c **** * HEADER FILES
+  24:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  25:Src/libs/MiscFunctions.c **** /* ansi c */
+  26:Src/libs/MiscFunctions.c **** 
+  27:Src/libs/MiscFunctions.c **** /* propietary */
+  28:Src/libs/MiscFunctions.c **** #include "MiscFunctions.h"
+  29:Src/libs/MiscFunctions.c **** 
+  30:Src/libs/MiscFunctions.c **** /* operation system */
+ARM GAS  /tmp/ccv76TjM.s 			page 2
+
+
+  31:Src/libs/MiscFunctions.c **** 
+  32:Src/libs/MiscFunctions.c **** 
+  33:Src/libs/MiscFunctions.c **** 
+  34:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  35:Src/libs/MiscFunctions.c **** * LOCAL CONSTANT DECLARATION
+  36:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  37:Src/libs/MiscFunctions.c **** 
+  38:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  39:Src/libs/MiscFunctions.c **** * LOCAL MACRO DECLARATION
+  40:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  41:Src/libs/MiscFunctions.c **** 
+  42:Src/libs/MiscFunctions.c **** 
+  43:Src/libs/MiscFunctions.c **** 
+  44:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  45:Src/libs/MiscFunctions.c **** * LOCAL NEW DATA TYPES
+  46:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  47:Src/libs/MiscFunctions.c **** 
+  48:Src/libs/MiscFunctions.c **** /**
+  49:Src/libs/MiscFunctions.c **** @name  	    data type Name 
+  50:Src/libs/MiscFunctions.c **** @brief	    Description
+  51:Src/libs/MiscFunctions.c **** */
+  52:Src/libs/MiscFunctions.c **** 
+  53:Src/libs/MiscFunctions.c ****            
+  54:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  55:Src/libs/MiscFunctions.c **** * LOCAL DATA DECLARATION
+  56:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  57:Src/libs/MiscFunctions.c **** 
+  58:Src/libs/MiscFunctions.c **** 
+  59:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  60:Src/libs/MiscFunctions.c **** * Global Data Declaration
+  61:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  62:Src/libs/MiscFunctions.c **** 
+  63:Src/libs/MiscFunctions.c **** 
+  64:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  65:Src/libs/MiscFunctions.c **** * GLOBAL FUNCTION DECLARATION
+  66:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  67:Src/libs/MiscFunctions.c **** 
+  68:Src/libs/MiscFunctions.c **** 
+  69:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  70:Src/libs/MiscFunctions.c **** * LOCAL FUNCTIONS DECLARATIONS
+  71:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  72:Src/libs/MiscFunctions.c **** 
+  73:Src/libs/MiscFunctions.c **** 
+  74:Src/libs/MiscFunctions.c **** 
+  75:Src/libs/MiscFunctions.c **** 
+  76:Src/libs/MiscFunctions.c **** /*******************************************************************************
+  77:Src/libs/MiscFunctions.c **** * LOCAL FUNCTIONS DEFINITIONS
+  78:Src/libs/MiscFunctions.c **** *******************************************************************************/
+  79:Src/libs/MiscFunctions.c **** 
+  80:Src/libs/MiscFunctions.c **** 
+  81:Src/libs/MiscFunctions.c **** /**********************************************************************************
+  82:Src/libs/MiscFunctions.c **** Function Name: 	MiscFunctions_DecodASCIIDecimalToHexa
+  83:Src/libs/MiscFunctions.c **** Description:	converts any ASCII-Hexa byte to its Hexa code
+  84:Src/libs/MiscFunctions.c **** Condition: 		none
+  85:Src/libs/MiscFunctions.c **** Return value: 	none
+  86:Src/libs/MiscFunctions.c **** ***;********************************************************************************/
+  87:Src/libs/MiscFunctions.c **** uint8 MiscFunctions_DecodASCIIDecimalToHexa(uint8 u8TmpHighASCIIData, uint8 u8TmpLowASCIIData)		//D
+ARM GAS  /tmp/ccv76TjM.s 			page 3
+
+
+  88:Src/libs/MiscFunctions.c **** {
+  29              		.loc 1 88 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  89:Src/libs/MiscFunctions.c **** 	uint8 u8RetHexaData = 0;
+  34              		.loc 1 89 2 view .LVU1
+  90:Src/libs/MiscFunctions.c ****     u8RetHexaData = (u8TmpHighASCIIData - '0')*10 + (u8TmpLowASCIIData - '0');
+  35              		.loc 1 90 5 view .LVU2
+  91:Src/libs/MiscFunctions.c ****     return u8RetHexaData;
+  36              		.loc 1 91 5 view .LVU3
+  90:Src/libs/MiscFunctions.c ****     u8RetHexaData = (u8TmpHighASCIIData - '0')*10 + (u8TmpLowASCIIData - '0');
+  37              		.loc 1 90 51 is_stmt 0 view .LVU4
+  38 0000 8300     		lsls	r3, r0, #2
+  39 0002 C018     		adds	r0, r0, r3
+  40              	.LVL1:
+  90:Src/libs/MiscFunctions.c ****     u8RetHexaData = (u8TmpHighASCIIData - '0')*10 + (u8TmpLowASCIIData - '0');
+  41              		.loc 1 90 19 view .LVU5
+  42 0004 1039     		subs	r1, r1, #16
+  43              	.LVL2:
+  90:Src/libs/MiscFunctions.c ****     u8RetHexaData = (u8TmpHighASCIIData - '0')*10 + (u8TmpLowASCIIData - '0');
+  44              		.loc 1 90 51 view .LVU6
+  45 0006 4000     		lsls	r0, r0, #1
+  90:Src/libs/MiscFunctions.c ****     u8RetHexaData = (u8TmpHighASCIIData - '0')*10 + (u8TmpLowASCIIData - '0');
+  46              		.loc 1 90 19 view .LVU7
+  47 0008 4018     		adds	r0, r0, r1
+  48              		.loc 1 91 12 view .LVU8
+  49 000a C0B2     		uxtb	r0, r0
+  92:Src/libs/MiscFunctions.c **** }         
+  50              		.loc 1 92 1 view .LVU9
+  51              		@ sp needed
+  52 000c 7047     		bx	lr
+  53              		.cfi_endproc
+  54              	.LFE0:
+  56 000e C046     		.text
+  57              	.Letext0:
+  58              		.file 2 "Src/libs/../defines.h"
+ARM GAS  /tmp/ccv76TjM.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 MiscFunctions.c
+     /tmp/ccv76TjM.s:16     .text.MiscFunctions_DecodASCIIDecimalToHexa:0000000000000000 $t
+     /tmp/ccv76TjM.s:25     .text.MiscFunctions_DecodASCIIDecimalToHexa:0000000000000000 MiscFunctions_DecodASCIIDecimalToHexa
+
+NO UNDEFINED SYMBOLS
